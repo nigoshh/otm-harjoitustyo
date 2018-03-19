@@ -1,0 +1,106 @@
+commit 3e0986c0919451724fa780d9f74bd101a874d749
+Author: nigoshh <32242577+nigoshh@users.noreply.github.com>
+Date:   Mon Mar 19 01:39:52 2018 +0200
+
+    muuuuutoksia
+
+ tiedostoja/file1  | 0
+ tiedostoja/file2  | 0
+ tiedostoja/file22 | 0
+ 3 files changed, 0 insertions(+), 0 deletions(-)
+
+commit 08b2d0c9bb92033f00000b7b0cd29ebd75f3274d
+Author: nigoshh <32242577+nigoshh@users.noreply.github.com>
+Date:   Mon Mar 19 01:34:29 2018 +0200
+
+    tiedostoja
+
+ tiedostoja/file1 | 0
+ tiedostoja/file2 | 0
+ tiedostoja/file3 | 0
+ 3 files changed, 0 insertions(+), 0 deletions(-)
+
+commit ee43cc7f4c6c9e979092db388397113c07324305
+Author: nigoshh <32242577+nigoshh@users.noreply.github.com>
+Date:   Mon Mar 19 01:25:12 2018 +0200
+
+    patch
+
+ eka.txt    | 10 +++++++---
+ kolmas.txt |  9 ++++++---
+ 2 files changed, 13 insertions(+), 6 deletions(-)
+
+commit 4e4caf274f574b87b4459d0f9098b25dc92d216a
+Author: nigoshh <32242577+nigoshh@users.noreply.github.com>
+Date:   Mon Mar 19 01:21:41 2018 +0200
+
+    added to kolmas
+
+ kolmas.txt | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+commit 60184bbc925dcbed3ecd4206af4d947994a98ef1
+Author: nigoshh <32242577+nigoshh@users.noreply.github.com>
+Date:   Mon Mar 19 01:19:51 2018 +0200
+
+    delete and rename
+
+ eka.txt      | 38 ++++++++++++++++++++++++++++++++++++++
+ tiedosto.txt | 38 --------------------------------------
+ toinen.txt   |  0
+ 3 files changed, 38 insertions(+), 38 deletions(-)
+
+commit 534349ad90528489af1d0c64185439f21acb7941
+Author: nigoshh <32242577+nigoshh@users.noreply.github.com>
+Date:   Mon Mar 19 01:15:20 2018 +0200
+
+    poisto ja lisäys samalla oho
+
+ tiedosto.txt | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+commit a120eae44ed29aa21ee196d6df76863843e5354f
+Author: nigoshh <32242577+nigoshh@users.noreply.github.com>
+Date:   Mon Mar 19 01:13:02 2018 +0200
+
+    paljon tekstiä
+
+ tiedosto.txt | 32 ++++++++++++++++++++++++++++++++
+ 1 file changed, 32 insertions(+)
+
+commit 8246ef586d7b4c2ccb19207eaff1a768ada450d9
+Author: nigoshh <32242577+nigoshh@users.noreply.github.com>
+Date:   Mon Mar 19 00:19:55 2018 +0200
+
+    more stufff
+
+ stuff/jokin.txt | 2 ++
+ 1 file changed, 2 insertions(+)
+
+commit 5335e3fee6a35b6164558f8b89f732c0cadcc292
+Author: nigoshh <32242577+nigoshh@users.noreply.github.com>
+Date:   Mon Mar 19 00:17:55 2018 +0200
+
+    kolmas lisätty
+
+ kolmas.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 82633bf001aa26a11077c2f4c82f5d33e41d0151
+Author: nigoshh <32242577+nigoshh@users.noreply.github.com>
+Date:   Mon Mar 19 00:11:12 2018 +0200
+
+    muutos ja lisäys
+
+ tiedosto.txt | 4 ++++
+ toinen.txt   | 0
+ 2 files changed, 4 insertions(+)
+
+commit 4a6150cc4d49064343b57d9e1b71218e91aa76af
+Author: nigoshh <32242577+nigoshh@users.noreply.github.com>
+Date:   Sun Mar 18 23:54:39 2018 +0200
+
+    tiedosto.txt luotu
+
+ tiedosto.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
