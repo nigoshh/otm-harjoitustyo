@@ -1,8 +1,8 @@
 # OTM-harjoitustyö
 ## Tehtävät
 ### Viikko1
-[komentorivi.txt](https://github.com/nigoshh/otm-harjoitustyo/blob/master/laskarit/komentorivi.txt)  
-[gitlog.txt](https://github.com/nigoshh/otm-harjoitustyo/blob/master/laskarit/gitlog.txt)
+[komentorivi.txt](https://github.com/nigoshh/otm-harjoitustyo/blob/master/laskarit/viikko1/komentorivi.txt)  
+[gitlog.txt](https://github.com/nigoshh/otm-harjoitustyo/blob/master/laskarit/viikko1/gitlog.txt)
 
 # Rad Websites
 If a site you __seek__  
