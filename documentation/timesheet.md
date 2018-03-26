@@ -1,6 +1,6 @@
 # Timesheet
-day | time | activity
+day | time | tasks
 ---:|---:|:---
-23/3/2018 | 1:00 | conceiving the program's basic idea
-26/3/2018 | | <span>testing md MD</br>testing MD again<br/>yeah</span>
+23/3/2018 | 1:00 | conception of basic idea for the app
+26/3/2018 | 2:15 | <span>timesheet (careful with recursion there)</br>software requirements specification structure<br/>Markdown research<br/>first sketch of UI</span>
 **total** | --- |数独ぜぇ～！
