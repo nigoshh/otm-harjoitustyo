@@ -1,11 +1,6 @@
-# OTM-harjoitustyö
-## Tehtävät
-### Viikko1
-[komentorivi.txt](https://github.com/nigoshh/otm-harjoitustyo/blob/master/laskarit/viikko1/komentorivi.txt)  
-[gitlog.txt](https://github.com/nigoshh/otm-harjoitustyo/blob/master/laskarit/viikko1/gitlog.txt)
-
-# Rad Websites
-If a site you __seek__  
-_some_ you'll find:
-* [AKE'](https://www.cs.helsinki.fi/u/andreala/eka.html)
-* [SuperMario ← PUURO](https://supermariodrinksonlypuuro.herokuapp.com/)
+# sudokuAPP
+[software requirements specification](https://github.com/nigoshh/otm-harjoitustyo/blob/master/documentation/software_requirements_specification.md)  
+[timesheet](https://github.com/nigoshh/otm-harjoitustyo/blob/master/documentation/timesheet.md)
+## Laskarit
+[viikko1](https://github.com/nigoshh/otm-harjoitustyo/blob/master/laskarit/viikko1/komentorivi.txt)  
+[viikko2](https://github.com/nigoshh/otm-harjoitustyo/tree/master/laskarit/viikko2)
