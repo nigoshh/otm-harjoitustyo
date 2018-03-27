@@ -5,7 +5,9 @@ This app creates sudoku puzzles, which users can solve. There can be many regist
 There is only one category of users (normal users). An additional category with superuser privileges might be introduced at some point, depending on how the app evolves.
 ## User interface draft
 The user interface consists of at least five views with roughly this layout:
-![alt text](https://github.com/nigoshh/otm-harjoitustyo/tree/master/documentation/images/srs1.png "User interface draft")
+
+![couldn't load image](https://github.com/nigoshh/otm-harjoitustyo/blob/master/documentation/images/srs1.png "User interface draft")
+
 The app starts in the login view. The next view can be either the main game view, or the one where a new user account can be created. From the main game view we can reach the settings view ("Options" in the draft) and the high scores view. Alternatively (or in addition) the link to the high scores view could be placed into the settings view. It's possible that the settings will need more than one view, depending on how many are implemented, and how clearly they can be grouped into subcategories.
 ## Basic features
 ### Before logging in
@@ -37,7 +39,7 @@ These features aren't essential but they could be implemented, given enough time
     - display hints
     - check if the puzzle contains wrong digits
     - display an error message immediately when the user enters a digit which is already present in the same row/column/block
-      - separate high scores achieved using these settings
+    - separate high scores achieved using these settings
   - select different input methods (digit first or cell first)
   - possibility to insert smaller digits into cells (candidates for a cell)
 - high scores filtering by timespan (last week, last month etc.)
@@ -45,7 +47,7 @@ These features aren't essential but they could be implemented, given enough time
   - choose different color schemes (one could be similar to a text editor's color scheme, like Monokai)
   - choose a shape of the puzzle (some shapes could be symmetrical)
   - choose an avatar
-    - unlock these settings only when a player achieves a certain threshold score
+  - unlock these settings only when a player achieves a certain threshold score
 - brief explanation of the game's rules (with a link to more thorough information)
 - competition puzzle: identical for all users, changes every week
   - possibility to display only high scores results from competition puzzles
