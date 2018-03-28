@@ -1,0 +1,69 @@
+1 paste into https://yuml.me/diagram/scruffy/class/draw (optional: select "Make it a boring one")
+
+[Monopolipeli],[Noppa],[Pelaaja],[Pelilauta],[Ruutu],[Pelinappula],[Pelaaja]-.->[Noppa],[Pelilauta]1-40[Ruutu],[Ruutu]1-0..8[Pelinappula],[Pelaaja]1-1[Pelinappula],[Monopolipeli]1-2[Noppa],[Monopolipeli]*-2..8[Pelaaja],[Monopolipeli]1-1[Pelilauta],[Ruutu]1-1[Ruutu]
+
+
+2 paste into https://yuml.me/diagram/scruffy/class/draw (optional: select "Make it a boring one")
+
+[Talo],[Hotelli],[Raha],[Kortti],[Toiminto],[Aloitusruutu],[Vankila],[SattumaYhteismaa],[AsemaLaitos],[NormaaliKatu],[Monopolipeli],[Noppa],[Pelaaja],[Pelilauta],[Ruutu],[Pelinappula],[Pelaaja]-.->[Noppa],[Pelilauta]1-40[Ruutu],[Ruutu]1-0..8[Pelinappula],[Pelaaja]1-1[Pelinappula],[Monopolipeli]1-2[Noppa],[Pelaaja]2..8-*[Monopolipeli],[Pelilauta]1-1[Monopolipeli],[Ruutu]1-1[Ruutu],[Monopolipeli]1-1[Aloitusruutu],[Vankila]1-1[Monopolipeli],[Vankila]-^[Ruutu],[Aloitusruutu]-^[Ruutu],[NormaaliKatu]-^[Ruutu],[Ruutu]^-[AsemaLaitos],[Ruutu]^-[SattumaYhteismaa],[Ruutu]1..40-1[Toiminto],[Kortti]<-.-[SattumaYhteismaa],[Kortti]*-1[Toiminto],[Raha]*-1[Pelaaja],[Pelaaja]0..1-0..40[NormaaliKatu],[NormaaliKatu]1-0..4[Talo],[Hotelli]0..1-1[NormaaliKatu],[Hotelli]-^[Talo],[Monopolipeli]1-*[Kortti]
+
+
+3 paste into https://www.websequencediagrams.com/
+
+title drive() a Machine
+
+participant "main" as m
+participant "mch:Machine" as M
+participant "engine:Engine" as E
+participant "tank:FuelTank" as T
+
+m->*+M: new Machine()
+M->*T: new FuelTank()
+M->T: fill(40)
+M->*-E: new Engine(tank)
+m->+M: drive()
+M->+E: start()
+E->-T: consume(5)
+M->+E: isRunning()
+E->+T: contentsLeft()
+T-->-E: 35
+E-->-M: true
+M->+E: useEnergy()
+deactivate M
+E->-T: consume(10)
+
+
+4 paste into https://www.websequencediagrams.com/
+
+title Arto ja HSL
+
+participant "main" as m
+participant "laitehallinto:HKLLaitehallinto" as lah
+participant "rautatietori:Lataajalaite" as rtt
+participant "ratikka6:Lukijalaite" as r6
+participant "bussi244:Lukijalaite" as b244
+participant "lippuLuukku:Kioski" as lil
+participant "artonKortti:Matkakortti" as ak
+
+m->*lah: new HKLLaitehallinto()
+m->*rtt: new Lataajalaite()
+m->*r6: new Lukijalaite()
+m->*b244: new Lukijalaite()
+m->lah: lisaaLataaja(rautatietori)
+m->lah: lisaaLukija(ratikka6)
+m->lah: lisaaLukija(bussi244)
+m->*lil: new Kioski()
+m->+lil: ostaMatkakortti("Arto")
+lil->*ak: new Matkakortti("Arto")
+lil-->-m: artonKortti
+m->+rtt: lataaArvoa(artonKortti, 3)
+rtt->-ak: kasvataArvoa(3)
+m->+r6: ostaLippu(artonKortti, 0)
+r6->+ak: getArvo()
+ak-->-r6: 3
+r6->ak: vahennaArvoa(1.5)
+r6-->-m: true
+m->+b244: ostaLippu(artonKortti, 2)
+b244->+ak: getArvo()
+ak-->-b244: 1.5
+b244-->-m: false
