@@ -24,17 +24,17 @@ public class Controller implements Initializable {
     @FXML
     void toLogin(ActionEvent event) {
         app.clearLoginScene();
-        app.setloginScene();
+        app.stageLoginScene();
     }
 
     @FXML
     private void toNewUser(ActionEvent event) {
-        app.setNewUserScene();
+        app.stageNewUserScene();
     }
 
     @FXML
     void toGame(ActionEvent event) {
-        app.setGameScene();
+        app.stageGameScene();
     }
 
     void setGame(User user) {

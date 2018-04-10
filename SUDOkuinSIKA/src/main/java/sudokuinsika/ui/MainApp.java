@@ -60,28 +60,40 @@ public class MainApp extends Application {
         this.stage = stage;
 
         stage.setTitle("SUDOku");
-        setloginScene();
+        stageLoginScene();
         stage.show();
     }
 
-    public void setloginScene() {
+    public void stageLoginScene() {
         stage.setScene(loginScene);
     }
 
-    public void setNewUserScene() {
+    public void stageNewUserScene() {
         stage.setScene(newUserScene);
     }
 
-    public void setGameScene() {
+    public void stageGameScene() {
         stage.setScene(gameScene);
     }
 
     public void setGame(User user) {
         game = new Game(user);
     }
-    
+
     public void clearLoginScene() {
         loginController.clear();
+    }
+
+    public Scene getGameScene() {
+        return gameScene;
+    }
+
+    public Stage getStage() {
+        return stage;
+    }
+
+    public LoginController getLoginController() {
+        return loginController;
     }
 
     @Override

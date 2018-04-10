@@ -15,6 +15,10 @@ public class LoginController extends Controller {
     @FXML
     private TextField username;
 
+    public TextField getUsername() {
+        return username;
+    }
+
     @FXML
     private PasswordField password;
 
@@ -28,7 +32,7 @@ public class LoginController extends Controller {
     private Label error;
 
     @FXML
-    private void login(ActionEvent event) throws SQLException {
+    void login(ActionEvent event) throws SQLException {
         User user = userDao.findOne(username.getText());
         if (user == null) {
             error.setText("wrong username and/or password! don't mess around");
