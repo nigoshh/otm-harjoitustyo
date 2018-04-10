@@ -2,13 +2,13 @@ package sudokuinsika.domain;
 
 public class Game {
 
-    private User u;
+    private User user;
 
-    public Game(User u) {
-        this.u = u;
+    public Game(User user) {
+        this.user = user;
     }
 
-    public void setU(User u) {
-        this.u = u;
+    public void setU(User user) {
+        this.user = user;
     }
 }

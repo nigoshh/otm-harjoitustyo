@@ -5,4 +5,5 @@ day | time | tasks
 26/3/2018 | 2:15 | <span>timesheet (careful with recursion there)<br>software requirements specification structure<br>Markdown research<br>first sketch of UI</span>
 27/3/2018 | 4:00 | <span>software requirements specification<br>UI draft as PNG file<br>README update</span>
 9/4/2018 | 8:45 | <span>Maven project creation<br>read/watch videos about JavaFX and FXML<br>create scenes Login, NewUser and Game, and links between them<br>create userDao and some methods</span>
+10/4/2018 | 1:30 | <span>login function only username<br>create new user function</span>
 **total** | --- |数独ぜぇ～！

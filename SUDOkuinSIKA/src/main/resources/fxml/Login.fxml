@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
@@ -10,24 +11,11 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sudokuinsika.ui.LoginController">
-   <bottom>
-      <HBox spacing="13.0" BorderPane.alignment="CENTER">
-         <children>
-            <TextField fx:id="username" promptText="username" />
-            <PasswordField fx:id="password" promptText="password" />
-            <Button fx:id="login" mnemonicParsing="false" onAction="#toGame" text="log in" />
-            <Region HBox.hgrow="ALWAYS" />
-            <Hyperlink fx:id="linkToNewUser" onAction="#toNewUser" text="new here?" />
-         </children>
-         <padding>
-            <Insets bottom="7.0" left="7.0" right="7.0" top="7.0" />
-         </padding>
-      </HBox>
-   </bottom>
    <top>
       <ImageView fitHeight="179.0" fitWidth="574.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
          <image>
@@ -42,4 +30,27 @@
          </font>
       </Text>
    </center>
+   <bottom>
+      <VBox BorderPane.alignment="CENTER">
+         <children>
+            <HBox spacing="13.0">
+               <children>
+                  <TextField fx:id="username" promptText="username" />
+                  <PasswordField fx:id="password" promptText="password" />
+                  <Button fx:id="login" mnemonicParsing="false" onAction="#login" text="log in" />
+                  <Region HBox.hgrow="ALWAYS" />
+                  <Hyperlink fx:id="linkToNewUser" onAction="#toNewUser" text="new here?" />
+               </children>
+               <padding>
+                  <Insets bottom="7.0" left="7.0" right="7.0" top="7.0" />
+               </padding>
+            </HBox>
+            <Label fx:id="error" textFill="RED">
+               <padding>
+                  <Insets bottom="7.0" left="13.0" right="7.0" top="7.0" />
+               </padding>
+            </Label>
+         </children>
+      </VBox>
+   </bottom>
 </BorderPane>

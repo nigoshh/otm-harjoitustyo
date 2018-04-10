@@ -9,6 +9,8 @@ import javafx.stage.Stage;
 import sudokuinsika.dao.DBUserDao;
 import sudokuinsika.dao.Database;
 import sudokuinsika.dao.UserDao;
+import sudokuinsika.domain.Game;
+import sudokuinsika.domain.User;
 
 public class MainApp extends Application {
 
@@ -16,6 +18,10 @@ public class MainApp extends Application {
     private Scene loginScene;
     private Scene newUserScene;
     private Scene gameScene;
+
+    private LoginController loginController;
+
+    private Game game;
 
     @Override
     public void init() throws Exception {
@@ -27,7 +33,7 @@ public class MainApp extends Application {
         FXMLLoader loginSceneLoader
                 = new FXMLLoader(getClass().getResource("/fxml/Login.fxml"));
         Parent loginPane = loginSceneLoader.load();
-        LoginController loginController = loginSceneLoader.getController();
+        loginController = loginSceneLoader.getController();
         loginController.setApp(this);
         loginController.setUserDao(uDao);
         loginScene = new Scene(loginPane);
@@ -68,6 +74,14 @@ public class MainApp extends Application {
 
     public void setGameScene() {
         stage.setScene(gameScene);
+    }
+
+    public void setGame(User user) {
+        game = new Game(user);
+    }
+    
+    public void clearLoginScene() {
+        loginController.clear();
     }
 
     @Override

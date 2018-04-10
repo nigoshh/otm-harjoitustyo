@@ -37,11 +37,22 @@ public class DBUserDao implements UserDao {
     }
 
     @Override
-    public void save(User user) throws SQLException {
+    public boolean save(User user) throws SQLException {
         Connection conn = db.getConnection();
-        String comm = "INSERT INTO user (username, pwhash, email) "
+
+        String query = "SELECT id FROM user WHERE username = ?";
+        PreparedStatement stmt = conn.prepareStatement(query);
+        stmt.setString(1, user.getUsername());
+
+        ResultSet rs = stmt.executeQuery();
+        boolean hasOne = rs.next();
+        if (hasOne) {
+            return false;
+        }
+
+        query = "INSERT INTO user (username, pwhash, email) "
                 + "VALUES (?,?,?)";
-        PreparedStatement stmt = conn.prepareStatement(comm);
+        stmt = conn.prepareStatement(query);
         stmt.setString(1, user.getUsername());
         stmt.setString(2, user.getPwHash());
         stmt.setString(3, user.getEmail());
@@ -49,6 +60,7 @@ public class DBUserDao implements UserDao {
         stmt.executeUpdate();
         stmt.close();
         conn.close();
+        return true;
     }
 
 }
