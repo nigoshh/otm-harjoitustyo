@@ -50,8 +50,7 @@ public class DBUserDao implements UserDao {
             return false;
         }
 
-        query = "INSERT INTO user (username, pwhash, email) "
-                + "VALUES (?,?,?)";
+        query = "INSERT INTO user (username, pwhash, email) VALUES (?,?,?)";
         stmt = conn.prepareStatement(query);
         stmt.setString(1, user.getUsername());
         stmt.setString(2, user.getPwHash());

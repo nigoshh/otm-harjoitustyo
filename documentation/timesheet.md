@@ -6,5 +6,5 @@ day | time | tasks
 27/3/2018 | 4:00 | <span>software requirements specification<br>UI draft as PNG file<br>README update</span>
 9/4/2018 | 8:45 | <span>Maven project creation<br>read/watch videos about JavaFX and FXML<br>create scenes Login, NewUser and Game, and links between them<br>create userDao and some methods</span>
 10/4/2018 | 4:10 | <span>login function only username<br>create new user function<br>reading about .gitignore<br>fail to create tests for LoginController<br>create 2 tests for DBUserDao</span>
-12/4/2018 | 2:00 | <span>remove extra stuff from jacoco:report<br>create databases from code<br>remove .db files from git<br>fix .png in login scene</span>
+12/4/2018 | 5:30 | <span>remove extra stuff from jacoco:report<br>create databases from code<br>remove .db files from git<br>fix .png in login scene<br>implement Checkstyle<br>read about JavaDoc<br>read about JavaFX and experiment with the scenes</span>
 **total** | --- |数独ぜぇ～！
