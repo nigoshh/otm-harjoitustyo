@@ -28,8 +28,10 @@
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.8.0</version>
                 <configuration>
-                    <excludes>
-                    </excludes>
+                    <includes>
+                        <include>sudokuinsika/domain/*</include>
+                        <include>sudokuinsika/dao/*</include>
+                    </includes>
                 </configuration>
                 <executions>
                     <execution>

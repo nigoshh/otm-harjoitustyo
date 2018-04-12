@@ -1,5 +1,6 @@
 package sudokuinsika.dao;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -17,7 +18,11 @@ public class DBUserDaoTest {
 
     @Before
     public void setUp() throws ClassNotFoundException, SQLException {
+        boolean dbExists = (new File("test.db")).isFile();
         Database db = new Database("jdbc:sqlite:test.db");
+        if (!dbExists) {
+            db.init();
+        }
         dao = new DBUserDao(db);
 
         Connection conn = db.getConnection();

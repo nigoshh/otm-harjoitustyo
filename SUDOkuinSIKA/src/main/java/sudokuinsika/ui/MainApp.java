@@ -1,5 +1,6 @@
 package sudokuinsika.ui;
 
+import java.io.File;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.fxml.FXMLLoader;
@@ -27,7 +28,13 @@ public class MainApp extends Application {
     public void init() throws Exception {
         // here we build all the dependencies we need, and we inject them
         // into the controllers
+
+        boolean dbExists = (new File("userdata.db")).isFile();
         Database db = new Database("jdbc:sqlite:userdata.db");
+        if (!dbExists) {
+            db.init();
+        }
+
         UserDao uDao = new DBUserDao(db);
 
         FXMLLoader loginSceneLoader
