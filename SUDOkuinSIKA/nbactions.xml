@@ -37,5 +37,19 @@
                 <goal>jxr:jxr</goal>
                 <goal>checkstyle:checkstyle</goal>
             </goals>
+        </action>
+        <action>
+            <actionName>CUSTOM-create jar file</actionName>
+            <displayName>create jar file</displayName>
+            <goals>
+                <goal>package</goal>
+            </goals>
+        </action>
+        <action>
+            <actionName>CUSTOM-javadoc</actionName>
+            <displayName>javadoc</displayName>
+            <goals>
+                <goal>javadoc:javadoc</goal>
+            </goals>
         </action>        
     </actions>

@@ -7,4 +7,5 @@ day | time | tasks
 9/4/2018 | 8:45 | <span>Maven project creation<br>read/watch videos about JavaFX and FXML<br>create scenes Login, NewUser and Game, and links between them<br>create userDao and some methods</span>
 10/4/2018 | 4:10 | <span>login function only username<br>create new user function<br>reading about .gitignore<br>fail to create tests for LoginController<br>create 2 tests for DBUserDao</span>
 12/4/2018 | 5:30 | <span>remove extra stuff from jacoco:report<br>create databases from code<br>remove .db files from git<br>fix .png in login scene<br>implement Checkstyle<br>read about JavaDoc<br>read about JavaFX and experiment with the scenes</span>
+12/4/2018 | 4:45 | <span>search external libraries<br>test sudoku library<br>read about sudoku algorithms<br>create grid png file in GIMP<br>update README<br>start architecture graph<br>new classes Board and Cell</span>
 **total** | --- |数独ぜぇ～！
