@@ -8,6 +8,7 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import sudokuinsika.domain.Game;
 import sudokuinsika.domain.User;
 
 public class LoginController extends Controller {
@@ -32,12 +33,13 @@ public class LoginController extends Controller {
     private Label error;
 
     @FXML
-    void login(ActionEvent event) throws SQLException {
-        User user = userDao.findOne(username.getText());
+    private void login(ActionEvent event) throws SQLException {
+        System.out.println("debuGyo");
+        User user = getUserDao().findOne(username.getText());
         if (user == null) {
             error.setText("wrong username and/or password! don't mess around");
         } else {
-            setGame(user);
+            setGame(new Game(user));
             toGame(event);
         }
     }

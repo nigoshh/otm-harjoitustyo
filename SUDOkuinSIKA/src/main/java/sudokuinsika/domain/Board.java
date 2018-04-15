@@ -10,7 +10,7 @@ public class Board {
         this.solution = new Cell[9][9];
     }
 
-    public int getDigit(int x, int y) {
-        return cells[y][x].getDigit();
+    public int getDigit(int row, int column) {
+        return cells[row][column].getDigit();
     }
 }

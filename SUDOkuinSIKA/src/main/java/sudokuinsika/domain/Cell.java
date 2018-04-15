@@ -2,10 +2,10 @@ package sudokuinsika.domain;
 
 public class Cell {
 
-    private int digit;
+    private byte digit;
     private boolean modifiable;
 
-    public Cell(int digit, boolean modifiable) {
+    public Cell(byte digit, boolean modifiable) {
         this.digit = digit;
         this.modifiable = modifiable;
     }
@@ -14,7 +14,7 @@ public class Cell {
         return digit;
     }
 
-    public boolean setDigit(int digit) {
+    public boolean setDigit(byte digit) {
         if (modifiable) {
             this.digit = digit;
         }

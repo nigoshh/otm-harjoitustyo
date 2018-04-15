@@ -6,12 +6,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import sudokuinsika.dao.UserDao;
+import sudokuinsika.domain.Game;
 import sudokuinsika.domain.User;
 
 public class Controller implements Initializable {
 
-    MainApp app;
-    UserDao userDao;
+    private MainApp app;
+    private UserDao userDao;
 
     public void setApp(MainApp app) {
         this.app = app;
@@ -33,12 +34,26 @@ public class Controller implements Initializable {
     }
 
     @FXML
-    void toGame(ActionEvent event) {
+    public void toGame(ActionEvent event) {
         app.stageGameScene();
     }
 
-    void setGame(User user) {
-        app.setGame(user);
+    @FXML
+    public Game getGame() {
+        return app.getGame();
+    }
+
+    @FXML
+    public void newRiddle() {
+        getGame().createRiddle();
+    }
+
+    public void setGame(Game game) {
+        app.setGame(game);
+    }
+
+    public UserDao getUserDao() {
+        return userDao;
     }
 
     @Override

@@ -33,7 +33,7 @@ public class NewUserController extends Controller {
         private void create(ActionEvent event) throws SQLException {
             User user = new User(username.getText(), password.getText(),
                     email.getText());
-            if (userDao.save(user)) {
+            if (getUserDao().save(user)) {
                 toLogin(event);
             } else {
                 error.setText("username already in use, choose another one mate");

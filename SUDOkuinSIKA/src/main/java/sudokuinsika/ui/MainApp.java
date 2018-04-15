@@ -83,8 +83,12 @@ public class MainApp extends Application {
         stage.setScene(gameScene);
     }
 
-    public void setGame(User user) {
-        game = new Game(user);
+    public void setGame(Game game) {
+        this.game = game;
+    }
+
+    public Game getGame() {
+        return game;
     }
 
     public void clearLoginScene() {
