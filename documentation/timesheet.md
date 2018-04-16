@@ -9,5 +9,5 @@ day | time | tasks
 12/4/2018 | 5:30 | <span>remove extra stuff from jacoco:report<br>create databases from code<br>remove .db files from git<br>fix .png in login scene<br>implement Checkstyle<br>read about JavaDoc<br>read about JavaFX and experiment with the scenes</span>
 13/4/2018 | 6:00 | <span>search external libraries<br>test sudoku library<br>read about sudoku algorithms<br>create grid png file in GIMP<br>update README<br>start architecture graph<br>new classes Board and Cell<br>JavaFX research</span>
 14/4/2018 | 2:25 | <span>better layout for sudoku grid<br>test sudoku external library<br>develop controller classes</span>
-16/4/2018 | 1:30 | <span>draw buttons for cells in sudoku grid</span>
+16/4/2018 | 6:45 | <span>draw buttons for cells in sudoku grid<br>basic game functionalities<br>(fill puzzle, check puzzle correctness, create new puzzle)</span>
 **total** | --- |数独ぜぇ～！

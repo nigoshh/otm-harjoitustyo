@@ -3,45 +3,22 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Hyperlink?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sudokuinsika.ui.GameController">
-   <top>
-      <HBox alignment="TOP_CENTER" BorderPane.alignment="CENTER">
-         <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="SUDOkuu月">
-               <font>
-                  <Font size="30.0" />
-               </font>
-            </Text>
-         </children>
-      </HBox>
-   </top>
    <bottom>
       <Hyperlink onAction="#toLogin" text="log out" BorderPane.alignment="CENTER" />
    </bottom>
-   <left>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <children>
-            <Button layoutX="36.0" layoutY="63.0" mnemonicParsing="false" onAction="#debbbug" text="debug" />
-            <Button layoutX="48.0" layoutY="88.0" mnemonicParsing="false" text="Button" />
-            <Button layoutX="62.0" layoutY="125.0" mnemonicParsing="false" text="Button">
-               <padding>
-                  <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
-               </padding></Button>
-            <Button layoutX="36.0" layoutY="215.0" mnemonicParsing="false" onAction="#createCellButtons" style="-fx-background-radius: 0;" text="create cells" />
-         </children>
-      </AnchorPane>
-   </left>
    <center>
-      <GridPane fx:id="grid" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" style="-fx-background-color: black;" BorderPane.alignment="CENTER">
+      <GridPane fx:id="puzzleGrid" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" style="-fx-background-color: black;" BorderPane.alignment="CENTER">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" percentWidth="4.0" />
             <ColumnConstraints hgrow="SOMETIMES" percentWidth="9.0" />
@@ -85,7 +62,7 @@
             <RowConstraints percentHeight="5.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: white; -fx-background-radius: 0;" text="3" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: white; -fx-background-radius: 0; -fx-font-style: normal;" text="3" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <font>
                   <Font name="System Bold" size="23.0" />
                </font>
@@ -96,4 +73,64 @@
          </children>
       </GridPane>
    </center>
+   <left>
+      <GridPane fx:id="inputGrid" BorderPane.alignment="CENTER">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label text="input" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="1">
+               <font>
+                  <Font size="23.0" />
+               </font>
+            </Label>
+            <Button mnemonicParsing="false" onAction="#newPuzzle" text="new puzzle" GridPane.columnIndex="2" GridPane.rowIndex="7" />
+            <Button mnemonicParsing="false" onAction="#checkPuzzle" text="check puzzle" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+         </children>
+      </GridPane>
+   </left>
+   <top>
+      <VBox BorderPane.alignment="CENTER">
+         <children>
+            <HBox alignment="TOP_CENTER">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="SUDOkuu月">
+                     <font>
+                        <Font size="30.0" />
+                     </font>
+                  </Text>
+               </children>
+            </HBox>
+            <HBox>
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="select the desired input from the available choices then click on the desired cell in the puzzle" wrappingWidth="404.2523193359375">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="47.0" />
+                     </HBox.margin>
+                  </Text>
+               </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </HBox>
+         </children>
+      </VBox>
+   </top>
 </BorderPane>

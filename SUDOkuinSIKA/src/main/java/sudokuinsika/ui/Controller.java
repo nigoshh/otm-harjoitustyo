@@ -48,6 +48,10 @@ public class Controller implements Initializable {
         getGame().createRiddle();
     }
 
+    public MainApp getApp() {
+        return app;
+    }
+
     public void setGame(Game game) {
         app.setGame(game);
     }

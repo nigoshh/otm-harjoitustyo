@@ -1,6 +1,7 @@
 package sudokuinsika.ui;
 
 import java.io.File;
+import java.io.IOException;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.fxml.FXMLLoader;
@@ -19,8 +20,11 @@ public class MainApp extends Application {
     private Scene loginScene;
     private Scene newUserScene;
     private Scene gameScene;
+    private UserDao userDao;
 
     private LoginController loginController;
+    private NewUserController newUserController;
+    private GameController gameController;
 
     private Game game;
 
@@ -35,30 +39,30 @@ public class MainApp extends Application {
             db.init();
         }
 
-        UserDao uDao = new DBUserDao(db);
+        userDao = new DBUserDao(db);
 
         FXMLLoader loginSceneLoader
                 = new FXMLLoader(getClass().getResource("/fxml/Login.fxml"));
         Parent loginPane = loginSceneLoader.load();
         loginController = loginSceneLoader.getController();
         loginController.setApp(this);
-        loginController.setUserDao(uDao);
+        loginController.setUserDao(userDao);
         loginScene = new Scene(loginPane);
 
         FXMLLoader newUserSceneLoader
                 = new FXMLLoader(getClass().getResource("/fxml/NewUser.fxml"));
         Parent newUserPane = newUserSceneLoader.load();
-        NewUserController newUserController = newUserSceneLoader.getController();
+        newUserController = newUserSceneLoader.getController();
         newUserController.setApp(this);
-        newUserController.setUserDao(uDao);
+        newUserController.setUserDao(userDao);
         newUserScene = new Scene(newUserPane);
 
         FXMLLoader gameSceneLoader
                 = new FXMLLoader(getClass().getResource("/fxml/Game.fxml"));
         Parent gamePane = gameSceneLoader.load();
-        GameController gameController = gameSceneLoader.getController();
+        gameController = gameSceneLoader.getController();
         gameController.setApp(this);
-        gameController.setUserDao(uDao);
+        gameController.setUserDao(userDao);
         gameScene = new Scene(gamePane);
     }
 
@@ -105,6 +109,22 @@ public class MainApp extends Application {
 
     public LoginController getLoginController() {
         return loginController;
+    }
+
+    public GameController getGameController() {
+        return gameController;
+    }
+
+    private void initScene(String fxmlPath, Controller controller, Scene scene)
+            throws IOException {
+
+        FXMLLoader sceneLoader
+                = new FXMLLoader(getClass().getResource(fxmlPath));
+        Parent pane = sceneLoader.load();
+        controller = sceneLoader.getController();
+        controller.setApp(this);
+        controller.setUserDao(userDao);
+        scene = new Scene(pane);
     }
 
     @Override

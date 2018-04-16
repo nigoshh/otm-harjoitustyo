@@ -34,12 +34,14 @@ public class LoginController extends Controller {
 
     @FXML
     private void login(ActionEvent event) throws SQLException {
-        System.out.println("debuGyo");
         User user = getUserDao().findOne(username.getText());
         if (user == null) {
             error.setText("wrong username and/or password! don't mess around");
         } else {
-            setGame(new Game(user));
+            Game newGame = new Game(user);
+            newGame.createRiddle();
+            setGame(newGame);
+            getApp().getGameController().init();
             toGame(event);
         }
     }
