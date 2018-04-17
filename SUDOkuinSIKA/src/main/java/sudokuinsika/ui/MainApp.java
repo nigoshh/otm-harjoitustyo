@@ -41,6 +41,8 @@ public class MainApp extends Application {
 
         userDao = new DBUserDao(db);
 
+//        initScene("/fxml/Login.fxml", loginController, loginScene);
+
         FXMLLoader loginSceneLoader
                 = new FXMLLoader(getClass().getResource("/fxml/Login.fxml"));
         Parent loginPane = loginSceneLoader.load();
@@ -118,10 +120,9 @@ public class MainApp extends Application {
     private void initScene(String fxmlPath, Controller controller, Scene scene)
             throws IOException {
 
-        FXMLLoader sceneLoader
-                = new FXMLLoader(getClass().getResource(fxmlPath));
-        Parent pane = sceneLoader.load();
-        controller = sceneLoader.getController();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+        Parent pane = loader.load();
+        controller = loader.getController();
         controller.setApp(this);
         controller.setUserDao(userDao);
         scene = new Scene(pane);
