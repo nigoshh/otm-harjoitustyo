@@ -13,9 +13,9 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sudokuinsika.ui.GameController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#setCellWriteValuePressingKeys" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sudokuinsika.ui.GameController">
    <bottom>
-      <Hyperlink onAction="#toLogin" text="log out" BorderPane.alignment="CENTER" />
+      <Hyperlink fx:id="logOutLink" onAction="#toLogin" text="log out" BorderPane.alignment="CENTER" />
    </bottom>
    <center>
       <GridPane fx:id="puzzleGrid" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" style="-fx-background-color: black;" BorderPane.alignment="CENTER">
@@ -117,7 +117,7 @@
             </HBox>
             <HBox>
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="select the desired input from the available choices then click on the desired cell in the puzzle" wrappingWidth="404.2523193359375">
+                  <Text fx:id="instructions" strokeType="OUTSIDE" strokeWidth="0.0" text="instructions" wrappingWidth="663.0523071289062">
                      <font>
                         <Font size="18.0" />
                      </font>

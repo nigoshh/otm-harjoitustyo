@@ -10,9 +10,12 @@ import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Text;
 import sudokuinsika.domain.Game;
 
 public class GameController extends Controller {
@@ -23,6 +26,12 @@ public class GameController extends Controller {
     @FXML
     private GridPane inputGrid;
 
+    @FXML
+    private Hyperlink logOutLink;
+
+    @FXML
+    private Text instructions;
+
     private Button[] cellButtons;
     private RadioButton[] inputButtons;
     private String cellButtonBaseStyle
@@ -32,13 +41,13 @@ public class GameController extends Controller {
             + "-fx-font-size: 23";
 
     @FXML
-    public void newPuzzle(ActionEvent event) {
+    private void newPuzzle(ActionEvent event) {
         getGame().createRiddle();
         drawBoard();
     }
 
     @FXML
-    public void checkPuzzle(ActionEvent event) {
+    private void checkPuzzle(ActionEvent event) {
 
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("puzzle validity AKA your great skills");
@@ -52,7 +61,54 @@ public class GameController extends Controller {
         alert.setContentText(message);
 
         alert.showAndWait();
+    }
 
+    @FXML
+    private void setCellWriteValuePressingKeys(KeyEvent event) {
+        switch (event.getCode()) {
+            case DIGIT0:
+            case NUMPAD0:
+                inputButtons[0].fire();
+                break;
+            case DIGIT1:
+            case NUMPAD1:
+                inputButtons[1].fire();
+                break;
+            case DIGIT2:
+            case NUMPAD2:
+                inputButtons[2].fire();
+                break;
+            case DIGIT3:
+            case NUMPAD3:
+                inputButtons[3].fire();
+                break;
+            case DIGIT4:
+            case NUMPAD4:
+                inputButtons[4].fire();
+                break;
+            case DIGIT5:
+            case NUMPAD5:
+                inputButtons[5].fire();
+                break;
+            case DIGIT6:
+            case NUMPAD6:
+                inputButtons[6].fire();
+                break;
+            case DIGIT7:
+            case NUMPAD7:
+                inputButtons[7].fire();
+                break;
+            case DIGIT8:
+            case NUMPAD8:
+                inputButtons[8].fire();
+                break;
+            case DIGIT9:
+            case NUMPAD9:
+                inputButtons[9].fire();
+                break;
+            default:
+                break;
+        }
     }
 
     private void createCellButtons() {
@@ -152,5 +208,13 @@ public class GameController extends Controller {
         createCellButtons();
         drawBoard();
         createInputButtons();
+    }
+
+    public void clear() {
+        instructions.setText("instructions:"
+                + "\nselect the desired input from the available choices"
+                + "\n(click on a button or press the corresponding key on your keyboard)"
+                + "\nthen click on the desired cell in the puzzle");
+        logOutLink.setVisited(false);
     }
 }

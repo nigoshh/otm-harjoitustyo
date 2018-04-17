@@ -10,4 +10,5 @@ day | time | tasks
 13/4/2018 | 6:00 | <span>search external libraries<br>test sudoku library<br>read about sudoku algorithms<br>create grid png file in GIMP<br>update README<br>start architecture graph<br>new classes Board and Cell<br>JavaFX research</span>
 14/4/2018 | 2:25 | <span>better layout for sudoku grid<br>test sudoku external library<br>develop controller classes</span>
 16/4/2018 | 6:45 | <span>draw buttons for cells in sudoku grid<br>basic game functionalities<br>(fill puzzle, check puzzle correctness, create new puzzle)</span>
-**total** | --- |数独ぜぇ～！
+17/4/2018 | 8:05 | <span>fix isValid() method (external library)<br>read about git forks and pull requests<br>test new isValid()<br>make pull request<br>new tests for Game class<br>class diagram for architecture description<br>some keyboard shortcuts in controller classes (setOnKeyPressed())</span>
+**total** | 48:55 |数独ぜぇ～！

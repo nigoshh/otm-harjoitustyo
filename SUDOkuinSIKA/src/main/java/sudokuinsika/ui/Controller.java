@@ -23,18 +23,20 @@ public class Controller implements Initializable {
     }
 
     @FXML
-    void toLogin(ActionEvent event) {
+    protected void toLogin(ActionEvent event) {
         app.clearLoginScene();
         app.stageLoginScene();
     }
 
     @FXML
-    private void toNewUser(ActionEvent event) {
+    protected void toNewUser(ActionEvent event) {
+        app.clearNewUserScene();
         app.stageNewUserScene();
     }
 
     @FXML
-    public void toGame(ActionEvent event) {
+    protected void toGame(ActionEvent event) {
+        app.clearGameScene();
         app.stageGameScene();
     }
 

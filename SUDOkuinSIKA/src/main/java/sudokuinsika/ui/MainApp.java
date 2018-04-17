@@ -41,6 +41,7 @@ public class MainApp extends Application {
 
         userDao = new DBUserDao(db);
 
+//        // why doesn't this work?
 //        initScene("/fxml/Login.fxml", loginController, loginScene);
 
         FXMLLoader loginSceneLoader
@@ -99,6 +100,14 @@ public class MainApp extends Application {
 
     public void clearLoginScene() {
         loginController.clear();
+    }
+
+    public void clearGameScene() {
+        gameController.clear();
+    }
+
+    public void clearNewUserScene() {
+        newUserController.clear();
     }
 
     public Scene getGameScene() {

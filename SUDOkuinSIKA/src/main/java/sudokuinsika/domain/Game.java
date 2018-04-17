@@ -51,4 +51,12 @@ public class Game {
     public void setCellWriteValue(byte cellWriteValue) {
         this.cellWriteValue = cellWriteValue;
     }
+
+    public Riddle getRiddle() {
+        return riddle;
+    }
+
+    public User getUser() {
+        return user;
+    }
 }

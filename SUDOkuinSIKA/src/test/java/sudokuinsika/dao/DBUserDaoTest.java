@@ -35,9 +35,12 @@ public class DBUserDaoTest {
 
     @Test
     public void saveSavesUserAndFindOneFindsExistingUser() throws SQLException {
-        User user = new User("test", "test", "test");
-        dao.save(user);
-        assertEquals(user, dao.findOne(user.getUsername()));
+        User user1 = new User("test", "test", "test");
+        dao.save(user1);
+        User user2 = dao.findOne(user1.getUsername());
+        assertEquals(user1.getUsername(), user2.getUsername());
+        assertEquals(user1.getPwHash(), user2.getPwHash());
+        assertEquals(user1.getEmail(), user2.getEmail());
     }
 
     @Test
