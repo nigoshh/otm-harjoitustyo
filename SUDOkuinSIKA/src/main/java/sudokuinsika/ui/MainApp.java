@@ -2,17 +2,20 @@ package sudokuinsika.ui;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import sudokuinsika.dao.DBScoreDao;
 import sudokuinsika.dao.DBUserDao;
 import sudokuinsika.dao.Database;
+import sudokuinsika.dao.ScoreDao;
 import sudokuinsika.dao.UserDao;
 import sudokuinsika.domain.Game;
-import sudokuinsika.domain.User;
+import sudokuinsika.domain.UsersManagement;
 
 public class MainApp extends Application {
 
@@ -20,11 +23,15 @@ public class MainApp extends Application {
     private Scene loginScene;
     private Scene newUserScene;
     private Scene gameScene;
+    private Scene scoresScene;
     private UserDao userDao;
+    private ScoreDao scoreDao;
+    private UsersManagement usersMgmt;
 
     private LoginController loginController;
     private NewUserController newUserController;
     private GameController gameController;
+    private ScoresController scoresController;
 
     private Game game;
 
@@ -40,6 +47,8 @@ public class MainApp extends Application {
         }
 
         userDao = new DBUserDao(db);
+        scoreDao = new DBScoreDao(db);
+        usersMgmt = new UsersManagement(userDao, scoreDao);
 
 //        // why doesn't this work?
 //        initScene("/fxml/Login.fxml", loginController, loginScene);
@@ -49,7 +58,7 @@ public class MainApp extends Application {
         Parent loginPane = loginSceneLoader.load();
         loginController = loginSceneLoader.getController();
         loginController.setApp(this);
-        loginController.setUserDao(userDao);
+        loginController.setUsersMgmt(usersMgmt);
         loginScene = new Scene(loginPane);
 
         FXMLLoader newUserSceneLoader
@@ -57,7 +66,7 @@ public class MainApp extends Application {
         Parent newUserPane = newUserSceneLoader.load();
         newUserController = newUserSceneLoader.getController();
         newUserController.setApp(this);
-        newUserController.setUserDao(userDao);
+        newUserController.setUsersMgmt(usersMgmt);
         newUserScene = new Scene(newUserPane);
 
         FXMLLoader gameSceneLoader
@@ -65,8 +74,16 @@ public class MainApp extends Application {
         Parent gamePane = gameSceneLoader.load();
         gameController = gameSceneLoader.getController();
         gameController.setApp(this);
-        gameController.setUserDao(userDao);
+        gameController.setUsersMgmt(usersMgmt);
         gameScene = new Scene(gamePane);
+
+        FXMLLoader scoresSceneLoader
+                = new FXMLLoader(getClass().getResource("/fxml/Scores.fxml"));
+        Parent scoresPane = scoresSceneLoader.load();
+        scoresController = scoresSceneLoader.getController();
+        scoresController.setApp(this);
+        scoresController.setUsersMgmt(usersMgmt);
+        scoresScene = new Scene(scoresPane);
     }
 
     @Override
@@ -90,6 +107,10 @@ public class MainApp extends Application {
         stage.setScene(gameScene);
     }
 
+    public void stageScoresScene() {
+        stage.setScene(scoresScene);
+    }
+
     public void setGame(Game game) {
         this.game = game;
     }
@@ -108,6 +129,10 @@ public class MainApp extends Application {
 
     public void clearNewUserScene() {
         newUserController.clear();
+    }
+
+    public void clearScoresScene() throws SQLException {
+        scoresController.clear();
     }
 
     public Scene getGameScene() {
@@ -133,7 +158,7 @@ public class MainApp extends Application {
         Parent pane = loader.load();
         controller = loader.getController();
         controller.setApp(this);
-        controller.setUserDao(userDao);
+        controller.setUsersMgmt(usersMgmt);
         scene = new Scene(pane);
     }
 

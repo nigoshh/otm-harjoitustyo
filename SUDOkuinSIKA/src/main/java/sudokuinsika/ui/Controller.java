@@ -1,25 +1,26 @@
 package sudokuinsika.ui;
 
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import sudokuinsika.dao.UserDao;
+import javafx.scene.Cursor;
 import sudokuinsika.domain.Game;
-import sudokuinsika.domain.User;
+import sudokuinsika.domain.UsersManagement;
 
 public class Controller implements Initializable {
 
     private MainApp app;
-    private UserDao userDao;
+    private UsersManagement usersMgmt;
 
     public void setApp(MainApp app) {
         this.app = app;
     }
 
-    public void setUserDao(UserDao userDao) {
-        this.userDao = userDao;
+    public void setUsersMgmt(UsersManagement usersMgmt) {
+        this.usersMgmt = usersMgmt;
     }
 
     @FXML
@@ -40,6 +41,11 @@ public class Controller implements Initializable {
         app.stageGameScene();
     }
 
+    @FXML protected void toScores(ActionEvent event) throws SQLException {
+        app.clearScoresScene();
+        app.stageScoresScene();
+    }
+
     @FXML
     public Game getGame() {
         return app.getGame();
@@ -58,8 +64,12 @@ public class Controller implements Initializable {
         app.setGame(game);
     }
 
-    public UserDao getUserDao() {
-        return userDao;
+    public UsersManagement getUsersMgmt() {
+        return usersMgmt;
+    }
+
+    public void setCursor(Cursor cursor) {
+        app.getStage().getScene().setCursor(cursor);
     }
 
     @Override

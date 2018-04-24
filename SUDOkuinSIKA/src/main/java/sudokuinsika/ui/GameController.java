@@ -1,21 +1,24 @@
 package sudokuinsika.ui;
 
-import de.sfuhrm.sudoku.Riddle;
-import javafx.collections.ObservableList;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
+import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 import sudokuinsika.domain.Game;
 
 public class GameController extends Controller {
@@ -32,6 +35,18 @@ public class GameController extends Controller {
     @FXML
     private Text instructions;
 
+    @FXML
+    private Label timer;
+
+    @FXML
+    private Button check;
+
+    @FXML
+    private Button newPuzzle;
+
+    @FXML
+    private Hyperlink topScoresLink;
+
     private Button[] cellButtons;
     private RadioButton[] inputButtons;
     private String cellButtonBaseStyle
@@ -42,8 +57,12 @@ public class GameController extends Controller {
 
     @FXML
     private void newPuzzle(ActionEvent event) {
-        getGame().createRiddle();
+        Game game = getGame();
+        game.createRiddle();
         drawBoard();
+        game.resetTimer();
+        startTimer();
+        updateTimer();
     }
 
     @FXML
@@ -125,6 +144,14 @@ public class GameController extends Controller {
                 b.setOnAction((ActionEvent e) -> {
                     if (getGame().writeCell(cellRow, cellColumn)) {
                         b.setText(getCellValue(cellRow, cellColumn));
+                        try {
+                            if (getGame().won()) {
+                                victory();
+                            }
+                        } catch (SQLException ex) {
+                            Logger.getLogger(GameController.class.getName())
+                                    .log(Level.SEVERE, null, ex);
+                        }
                     }
                 });
                 puzzleGrid.add(b, gridColumn, gridRow);
@@ -140,6 +167,7 @@ public class GameController extends Controller {
         RadioButton delete = new RadioButton("delete");
         delete.getStyleClass().remove("radio-button");
         delete.getStyleClass().add("toggle-button");
+        delete.setStyle("-fx-font-size: 17");
         delete.setToggleGroup(group);
         delete.setSelected(true);
         delete.setOnAction((ActionEvent e) -> {
@@ -154,6 +182,7 @@ public class GameController extends Controller {
                 RadioButton rb = new RadioButton("" + i);
                 rb.getStyleClass().remove("radio-button");
                 rb.getStyleClass().add("toggle-button");
+                rb.setStyle("-fx-font-size: 17");
                 rb.setToggleGroup(group);
                 final byte cellWriteValue = i;
                 rb.setOnAction((ActionEvent e) -> {
@@ -208,6 +237,7 @@ public class GameController extends Controller {
         createCellButtons();
         drawBoard();
         createInputButtons();
+        startTimer();
     }
 
     public void clear() {
@@ -216,5 +246,35 @@ public class GameController extends Controller {
                 + "\n(click on a button or press the corresponding key on your keyboard)"
                 + "\nthen click on the desired cell in the puzzle");
         logOutLink.setVisited(false);
+        topScoresLink.setVisited(false);
+        check.requestFocus();
+        updateTimer();
+    }
+
+    private final Timeline timerTL = new Timeline(new KeyFrame(
+            Duration.seconds(1), (ActionEvent event) -> {
+                updateTimer();
+    }));
+
+    private void updateTimer() {
+        timer.setText(getGame().timeElapsed());
+    }
+
+    public void startTimer() {
+        timerTL.setCycleCount(Timeline.INDEFINITE);
+        timerTL.play();
+
+    }
+
+    private void victory() {
+
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("congrats mate");
+        alert.setHeaderText(null);
+        String message = "you won! cheers";
+        alert.setContentText(message);
+
+        alert.showAndWait();
+        newPuzzle.fire();
     }
 }

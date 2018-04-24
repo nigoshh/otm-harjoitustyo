@@ -1,0 +1,54 @@
+paste into https://www.websequencediagrams.com/
+
+title User logs in
+
+participant "real world user" as ru
+participant "UI" as ui
+participant "MainApp" as main
+participant "LoginController" as lc
+participant "Controller" as cc
+participant "Game" as gm
+participant "GameController" as gc
+participant "UsersManagement" as um
+participant "DBUserDao" as ud
+participant "User" as us
+participant "userdata.db" as db
+
+ru->ui: click logIn Button
+ui->+lc: logIn()
+lc->+cc: getUsersMgmt()
+cc->-lc: UsersMgmt
+lc->lc: username.getText()
+lc->lc: password.getText().toCharArray()
+lc->+um: logIn("username", password)
+um->+ud: findOne("username")
+ud->*us: new User("username")
+ud->+db: SELECT * FROM user WHERE username = "username"
+db->-ud: query result
+ud->us: setUserData(User, ResultSet)
+ud->-um: User
+um->+us: getPwSalt()
+us->-um: pwSalt
+um->+us: getPwIterations()
+us->-um: pwIterations
+um->+us: getPwKeyLength()
+us->-um: pwKeyLength
+um->um: hashPassword(password, pwSalt, pwIterations, pwKeyLength)
+um->*gm: new Game(UsersManagement)
+um->-lc: Game
+lc->gm: createRiddle()
+lc->+cc: setGame(Game)
+cc->-main: setGame(Game)
+lc->+cc: getApp()
+cc->-lc: MainApp
+lc->+main: getGameController()
+main->-lc: GameController
+lc->gc: init()
+lc->+cc: toGame()
+cc->+main: clearGameScene()
+main->-gc: clear()
+cc->+main: stageGameScene()
+main->-ui: stage.setScene(gameScene)
+deactivate cc
+lc->lc: username.setText("")
+lc->-lc: password.setText("")

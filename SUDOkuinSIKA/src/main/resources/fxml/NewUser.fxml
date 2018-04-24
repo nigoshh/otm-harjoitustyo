@@ -8,39 +8,61 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sudokuinsika.ui.NewUserController">
    <children>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="new user" />
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="new user">
+         <font>
+            <Font size="23.0" />
+         </font></Text>
       <Region prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
       <TextField fx:id="username" onKeyPressed="#createUserPressingEnter" promptText="username">
          <VBox.margin>
             <Insets bottom="7.0" left="7.0" right="7.0" top="7.0" />
-         </VBox.margin></TextField>
+         </VBox.margin>
+         <font>
+            <Font size="17.0" />
+         </font></TextField>
       <PasswordField fx:id="password" onKeyPressed="#createUserPressingEnter" promptText="password">
          <VBox.margin>
             <Insets bottom="7.0" left="7.0" right="7.0" top="7.0" />
          </VBox.margin>
+         <font>
+            <Font size="17.0" />
+         </font>
       </PasswordField>
       <PasswordField fx:id="repeatPW" onKeyPressed="#createUserPressingEnter" promptText="repeat password">
          <VBox.margin>
             <Insets bottom="7.0" left="7.0" right="7.0" top="7.0" />
          </VBox.margin>
+         <font>
+            <Font size="17.0" />
+         </font>
       </PasswordField>
       <TextField fx:id="email" onKeyPressed="#createUserPressingEnter" promptText="email">
          <VBox.margin>
             <Insets bottom="7.0" left="7.0" right="7.0" top="7.0" />
          </VBox.margin>
+         <font>
+            <Font size="17.0" />
+         </font>
       </TextField>
-      <Button fx:id="create" mnemonicParsing="false" onAction="#create" text="create new user" />
+      <Button fx:id="create" mnemonicParsing="false" onAction="#create" text="create new user">
+         <font>
+            <Font size="17.0" />
+         </font></Button>
       <Label fx:id="error" textFill="RED">
          <padding>
             <Insets bottom="7.0" left="7.0" right="7.0" top="7.0" />
          </padding>
       </Label>
       <Region prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
-      <Hyperlink fx:id="logInLink" onAction="#toLogin" text="been here before?" />
+      <Hyperlink fx:id="logInLink" onAction="#toLogin" text="been here before?">
+         <font>
+            <Font size="21.0" />
+         </font></Hyperlink>
    </children>
    <padding>
       <Insets bottom="7.0" left="23.0" right="23.0" top="7.0" />

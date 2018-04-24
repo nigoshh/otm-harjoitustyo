@@ -1,19 +1,30 @@
 package sudokuinsika.domain;
 
-import org.junit.After;
-import org.junit.AfterClass;
+import de.sfuhrm.sudoku.GameMatrix;
+import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import sudokuinsika.dao.FakeScoreDao;
+import sudokuinsika.dao.FakeUserDao;
 
 public class GameTest {
 
     private Game game;
+    private UsersManagement usersMgmt;
 
     @Before
-    public void setUp() {
-        game = new Game(new User("test", "test", "test"));
+    public void setUp() throws SQLException, NoSuchAlgorithmException {
+        usersMgmt = new UsersManagement(new FakeUserDao(), new FakeScoreDao());
+        usersMgmt.setPwIterations(1);
+        String pw = "password";
+        char[] password = pw.toCharArray();
+        usersMgmt.createUser("test", password, "test");
+        usersMgmt.logIn("test", password);
+        game = new Game(usersMgmt);
         game.createRiddle();
     }
 
@@ -66,12 +77,21 @@ public class GameTest {
     }
 
     @Test
-    public void setUserSetsUserAndGetUserGetsUser() {
-        User user1 = new User("Nyjah", "Nyjah", "Nyjah");
-        game.setUser(user1);
-        User user2 = game.getUser();
-        assertEquals(user1.getUsername(), user2.getUsername());
-        assertEquals(user1.getPwHash(), user2.getPwHash());
-        assertEquals(user1.getEmail(), user2.getEmail());
+    public void timeElapsedReturnsCorrectlyFormattedString() {
+        Pattern p = Pattern.compile("\\d+:\\d{2}:\\d{2}");
+        Matcher m = p.matcher(game.timeElapsed());
+        assertTrue(m.matches());
+    }
+
+    @Test
+    public void wonReturnsTrueIfRiddleIsSolved() throws SQLException {
+        GameMatrix solution = game.getSolution();
+        for (int row = 0; row < 9; row++) {
+            for (int column = 0; column < 9; column++) {
+                game.setCellWriteValue(solution.get(row, column));
+                game.writeCell(row, column);
+            }
+        }
+        assertTrue(game.won());
     }
 }

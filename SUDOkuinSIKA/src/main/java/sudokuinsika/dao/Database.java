@@ -8,6 +8,21 @@ import java.sql.Statement;
 public class Database {
 
     private String address;
+    private final String createTableUser
+            = "CREATE TABLE user "
+            + "(id integer primary key, "
+            + "username varchar(230), "
+            + "pwhash varchar(1000), "
+            + "pwsalt blob, "
+            + "pwiterations integer, "
+            + "pwkeylength integer, "
+            + "email varchar(230))";
+    private final String createTableScore
+            = "CREATE TABLE score "
+            + "(user_id integer, "
+            + "score integer, "
+            + "time timestamp, "
+            + "FOREIGN KEY (user_id) REFERENCES user(id))";
 
     public Database(String address) throws ClassNotFoundException {
         this.address = address;
@@ -20,18 +35,8 @@ public class Database {
     public void init() throws SQLException {
         Connection conn = getConnection();
         Statement stmt = conn.createStatement();
-        String user = "CREATE TABLE user "
-                + "(id integer primary key, "
-                + "username varchar(230), "
-                + "pwhash varchar(230), "
-                + "email varchar(230))";
-        stmt.executeUpdate(user);
-        String score = "CREATE TABLE score "
-                + "(id integer primary key, "
-                + "user_id integer, "
-                + "score integer, "
-                + "time timestamp)";
-        stmt.executeUpdate(score);
+        stmt.executeUpdate(createTableUser);
+        stmt.executeUpdate(createTableScore);
         stmt.close();
         conn.close();
     }

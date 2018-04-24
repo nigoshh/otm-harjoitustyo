@@ -3,6 +3,7 @@ package sudokuinsika.ui;
 import java.sql.SQLException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
@@ -10,7 +11,6 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import sudokuinsika.domain.Game;
-import sudokuinsika.domain.User;
 
 public class LoginController extends Controller {
 
@@ -35,16 +35,23 @@ public class LoginController extends Controller {
 
     @FXML
     private void logIn(ActionEvent event) throws SQLException {
-        User user = getUserDao().findOne(username.getText());
-        if (user == null) {
+
+        setCursor(Cursor.WAIT);
+        Game game = getUsersMgmt().logIn(
+                username.getText(), password.getText().toCharArray());
+        setCursor(Cursor.DEFAULT);
+
+        if (game == null) {
             error.setText("wrong username and/or password! don't mess around");
         } else {
-            Game newGame = new Game(user);
-            newGame.createRiddle();
-            setGame(newGame);
+            game.createRiddle();
+            setGame(game);
             getApp().getGameController().init();
             toGame(event);
         }
+
+        username.setText("");
+        password.setText("");
     }
 
     @FXML
@@ -63,5 +70,6 @@ public class LoginController extends Controller {
         password.setText("");
         error.setText("");
         linkToNewUser.setVisited(false);
+        username.requestFocus();
     }
 }

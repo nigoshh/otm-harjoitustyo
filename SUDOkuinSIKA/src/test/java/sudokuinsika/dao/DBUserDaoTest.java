@@ -4,10 +4,7 @@ import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import sudokuinsika.domain.User;
@@ -35,12 +32,10 @@ public class DBUserDaoTest {
 
     @Test
     public void saveSavesUserAndFindOneFindsExistingUser() throws SQLException {
-        User user1 = new User("test", "test", "test");
+        User user1 = new User("test");
         dao.save(user1);
         User user2 = dao.findOne(user1.getUsername());
         assertEquals(user1.getUsername(), user2.getUsername());
-        assertEquals(user1.getPwHash(), user2.getPwHash());
-        assertEquals(user1.getEmail(), user2.getEmail());
     }
 
     @Test

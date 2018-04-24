@@ -1,29 +1,26 @@
 package sudokuinsika.dao;
 
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 import sudokuinsika.domain.User;
 
 public class FakeUserDao implements UserDao {
-    private User user;
+
+    public Map<String, User> users;
 
     public FakeUserDao() {
-        user = new User("test", "test", "test");
+        users = new HashMap<>();
     }
 
     @Override
     public User findOne(String username) throws SQLException {
-        if (username.equals(user.getUsername())) {
-            return user;
-        }
-        return null;
+        return users.getOrDefault(username, null);
     }
 
     @Override
     public boolean save(User user) throws SQLException {
-        if (user.getUsername().equals(this.user.getUsername())) {
-            return false;
-        }
-        return true;
+        return users.putIfAbsent(user.getUsername(), user) == null;
     }
 
 }
