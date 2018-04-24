@@ -1,6 +1,6 @@
 # SUDOkuinSIKA
 
-An app to play sudoku. Developed on Windows, might have some minor GUI bugs in Linux and Mac OS X.
+An app to play sudoku. Developed on Windows, might have some minor GUI bugs on Linux and Mac OS X.
 
 ## Documentation
 

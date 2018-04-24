@@ -11,4 +11,8 @@ day | time | tasks
 14/4/2018 | 2:25 | <span>better layout for sudoku grid<br>test sudoku external library<br>develop controller classes</span>
 16/4/2018 | 6:45 | <span>draw buttons for cells in sudoku grid<br>basic game functionalities<br>(fill puzzle, check puzzle correctness, create new puzzle)</span>
 17/4/2018 | 8:05 | <span>fix isValid() method (external library)<br>read about git forks and pull requests<br>test new isValid()<br>make pull request<br>new tests for Game class<br>class diagram for architecture description<br>some keyboard shortcuts in controller classes (setOnKeyPressed())</span>
-**total** | 48:55 |数独ぜぇ～！
+21/4/2018 | 1:00 | game timer
+22/4/2018 | 1:10 | game timer, login with passwords
+23/4/2018 | 8:50 | <span>read about Argon2 and PBKDF2<br>login with passwords<br>winning check and message<br>some new classes like ScoreDao</span>
+24/4/2018 | 7:05 | <span>saving scores<br>top scores view<br>new tests<br>sequence diagram<br>update sudoku library dependency<br>first release</span>
+**total** | 67:00 |数独ぜぇ～！
