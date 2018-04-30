@@ -23,14 +23,15 @@ public class DBScoreDao implements ScoreDao {
     }
 
     @Override
-    public List<Score> findScores() throws SQLException {
+    public List<Score> findScores(int level, boolean help) throws SQLException {
         List<Score> scores = new ArrayList<>();
         Connection conn = db.getConnection();
         String query = "SELECT score, time, username "
-                + "FROM score INNER JOIN user "
-                + "ON score.user_id = user.id "
-                + "ORDER BY score LIMIT 23";
+                + "FROM score INNER JOIN user ON score.user_id = user.id "
+                + "WHERE level = ? AND help = ? ORDER BY score LIMIT 23";
         PreparedStatement stmt = conn.prepareStatement(query);
+        stmt.setInt(1, level);
+        stmt.setBoolean(2, help);
         ResultSet rs = stmt.executeQuery();
 
         while (rs.next()) {
@@ -45,14 +46,17 @@ public class DBScoreDao implements ScoreDao {
     }
 
     @Override
-    public List<Score> findScores(User user) throws SQLException {
+    public List<Score> findScores(User user, int level, boolean help)
+            throws SQLException {
         int userId = user.getId();
         List<Score> scores = new ArrayList<>();
         Connection conn = db.getConnection();
         String query = "SELECT score, time FROM score WHERE user_id = ? "
-                + "ORDER BY score LIMIT 23";
+                + "AND level = ? and help = ? ORDER BY score LIMIT 23";
         PreparedStatement stmt = conn.prepareStatement(query);
         stmt.setInt(1, userId);
+        stmt.setInt(2, level);
+        stmt.setBoolean(3, help);
         ResultSet rs = stmt.executeQuery();
 
         while (rs.next()) {
@@ -66,14 +70,17 @@ public class DBScoreDao implements ScoreDao {
     }
 
     @Override
-    public void save(int userId, long score, long time) throws SQLException {
+    public void save(int userId, int level, boolean help, long score, long time)
+            throws SQLException {
         Connection conn = db.getConnection();
-        String query = "INSERT INTO score (user_id, score, time) "
-                + "VALUES (?, ?, ?)";
+        String query = "INSERT INTO score (user_id, level, help, score, time) "
+                + "VALUES (?, ?, ?, ?, ?)";
         PreparedStatement stmt = conn.prepareStatement(query);
         stmt.setInt(1, userId);
-        stmt.setLong(2, score);
-        stmt.setTimestamp(3, new Timestamp(time));
+        stmt.setInt(2, level);
+        stmt.setBoolean(3, help);
+        stmt.setLong(4, score);
+        stmt.setTimestamp(5, new Timestamp(time));
 
         stmt.executeUpdate();
         stmt.close();

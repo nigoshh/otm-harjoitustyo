@@ -83,6 +83,7 @@ public class MainApp extends Application {
         scoresController = scoresSceneLoader.getController();
         scoresController.setApp(this);
         scoresController.setUsersMgmt(usersMgmt);
+        scoresController.init();
         scoresScene = new Scene(scoresPane);
     }
 
@@ -171,5 +172,4 @@ public class MainApp extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-
 }

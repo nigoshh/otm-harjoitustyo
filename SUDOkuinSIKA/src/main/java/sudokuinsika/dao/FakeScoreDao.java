@@ -19,17 +19,16 @@ public class FakeScoreDao implements ScoreDao {
     }
 
     @Override
-    public List<Score> findScores() throws SQLException {
+    public List<Score> findScores(int level, boolean help) throws SQLException {
         return new ArrayList<>();
     }
 
     @Override
-    public List<Score> findScores(User user) throws SQLException {
+    public List<Score> findScores(User user, int level, boolean help) throws SQLException {
         return new ArrayList<>();
     }
 
     @Override
-    public void save(int userId, long score, long time) throws SQLException {
+    public void save(int userId, int level, boolean help, long score, long time) throws SQLException {
     }
-
 }

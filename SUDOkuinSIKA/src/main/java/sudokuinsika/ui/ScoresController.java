@@ -4,8 +4,14 @@ import java.sql.SQLException;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
+import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
 import javafx.scene.text.Text;
 import sudokuinsika.domain.Score;
 import sudokuinsika.domain.User;
@@ -21,9 +27,41 @@ public class ScoresController extends Controller {
     @FXML
     private Hyperlink linkToGame;
 
+    @FXML
+    private Slider slider;
+
+    @FXML
+    private Label sliderLabel;
+
+    @FXML
+    private Slider toggle;
+
+    @FXML
+    private Label toggleLabel;
+
+    @FXML
+    private Button update;
+
+    @FXML
+    private Label levelLabel;
+
+    @FXML
+    private Label helpLabel;
+
+    private IntegerProperty sliderValue = new SimpleIntegerProperty(29);
+    private IntegerProperty toggleValue = new SimpleIntegerProperty(0);
+
+    @FXML
+    private void update() throws SQLException {
+        updateLabels();
+        writeScoresUser();
+        writeScoresAll();
+    }
+
     private void writeScoresUser() throws SQLException {
         User user = getUsersMgmt().getLoggedInUser();
-        List<Score> scores = getUsersMgmt().getScoreDao().findScores(user);
+        List<Score> scores = getUsersMgmt().getScoreDao()
+                .findScores(user, level(), help());
         StringBuilder b = new StringBuilder();
         scores.stream().forEachOrdered(s -> {
             b.append(formatScore(s.getScore().toMillis()));
@@ -35,7 +73,8 @@ public class ScoresController extends Controller {
     }
 
     private void writeScoresAll() throws SQLException {
-        List<Score> scores = getUsersMgmt().getScoreDao().findScores();
+        List<Score> scores = getUsersMgmt().getScoreDao()
+                .findScores(level(), help());
         StringBuilder b = new StringBuilder();
         scores.stream().forEachOrdered(s -> {
             b.append(s.getUser().getUsername());
@@ -62,9 +101,33 @@ public class ScoresController extends Controller {
     }
 
     public void clear() throws SQLException {
-        writeScoresUser();
-        writeScoresAll();
+        update();
         topScoresUser.requestFocus();
         linkToGame.setVisited(false);
+    }
+
+    public void init() {
+        slider.valueProperty().bindBidirectional(sliderValue);
+        sliderLabel.textProperty().bind(Bindings.convert(sliderValue));
+        toggle.valueProperty().bindBidirectional(toggleValue);
+        toggleLabel.textProperty().bind(Bindings.convert(toggleValue));
+    }
+
+    private void updateLabels() {
+        levelLabel.setText("level " + level());
+        String helpText = "with";
+        if (!help()) {
+            helpText += "out";
+        }
+        helpText += " help";
+        helpLabel.setText(helpText);
+    }
+
+    private int level() {
+        return (int) slider.getValue();
+    }
+
+    private boolean help() {
+        return toggle.getValue() == 1;
     }
 }

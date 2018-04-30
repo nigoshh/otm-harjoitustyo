@@ -5,6 +5,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -14,10 +17,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.Slider;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
-import javafx.scene.text.Text;
 import javafx.util.Duration;
 import sudokuinsika.domain.Game;
 
@@ -33,7 +36,7 @@ public class GameController extends Controller {
     private Hyperlink logOutLink;
 
     @FXML
-    private Text instructions;
+    private Hyperlink instructions;
 
     @FXML
     private Label timer;
@@ -47,6 +50,15 @@ public class GameController extends Controller {
     @FXML
     private Hyperlink topScoresLink;
 
+    @FXML
+    private Slider slider;
+
+    @FXML
+    private Label sliderLabel;
+
+    @FXML
+    private Label level;
+
     private Button[] cellButtons;
     private RadioButton[] inputButtons;
     private String cellButtonBaseStyle
@@ -54,12 +66,14 @@ public class GameController extends Controller {
             + "-fx-background-radius: 0; "
             + "-fx-text-fill: #000000; "
             + "-fx-font-size: 23";
+    private IntegerProperty sliderValue = new SimpleIntegerProperty(29);
 
     @FXML
     private void newPuzzle(ActionEvent event) {
         Game game = getGame();
-        game.createRiddle();
+        game.createRiddle((int) slider.getValue());
         drawBoard();
+        level.setText("level " + game.getLevel());
         game.resetTimer();
         startTimer();
         updateTimer();
@@ -67,6 +81,8 @@ public class GameController extends Controller {
 
     @FXML
     private void checkPuzzle(ActionEvent event) {
+
+        getGame().setHelp(true);
 
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("puzzle validity AKA your great skills");
@@ -77,6 +93,30 @@ public class GameController extends Controller {
         } else {
             message += "you messed up mate, something's wrong here";
         }
+        alert.setContentText(message);
+
+        alert.showAndWait();
+    }
+
+    @FXML
+    private void showInstructions(ActionEvent event) {
+
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("instructions");
+        alert.setHeaderText(null);
+        String message = "select the desired input from the available choices"
+                + "\n(click on a button or press the corresponding key on your keyboard)"
+                + "\nthen click on the desired cell in the puzzle"
+                + "\n\nyou can create a new puzzle by selecting the desired level with the slider"
+                + "\nand then clicking on the \"new puzzle\" button"
+                + "\n\nthe level number represents the number of cells"
+                + "\nthat are already filled at the beginning"
+                + "\nso 79 is the easiest level, and 23 the hardest"
+                + "\n\nyou can check that all the digits you have input are valid"
+                + "\nby pressing the \"check puzzle\" button"
+                + "\nthis only means that there aren't any same digits in any column, row or block"
+                + "\n\nif you use the \"check puzzle\" button at least once when solving a puzzle"
+                + "\nyour score will be saved in a different category (\"with help\")";
         alert.setContentText(message);
 
         alert.showAndWait();
@@ -233,18 +273,21 @@ public class GameController extends Controller {
         }
     }
 
+    private void bindSliderAndLabel() {
+        slider.valueProperty().bindBidirectional(sliderValue);
+        sliderLabel.textProperty().bind(Bindings.convert(sliderValue));
+    }
+
     public void init() {
         createCellButtons();
         drawBoard();
         createInputButtons();
+        bindSliderAndLabel();
         startTimer();
     }
 
     public void clear() {
-        instructions.setText("instructions:"
-                + "\nselect the desired input from the available choices"
-                + "\n(click on a button or press the corresponding key on your keyboard)"
-                + "\nthen click on the desired cell in the puzzle");
+        instructions.setVisited(false);
         logOutLink.setVisited(false);
         topScoresLink.setVisited(false);
         check.requestFocus();

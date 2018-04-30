@@ -15,4 +15,5 @@ day | time | tasks
 22/4/2018 | 1:10 | game timer, login with passwords
 23/4/2018 | 8:50 | <span>read about Argon2 and PBKDF2<br>login with passwords<br>winning check and message<br>some new classes like ScoreDao</span>
 24/4/2018 | 7:05 | <span>saving scores<br>top scores view<br>new tests<br>sequence diagram<br>update sudoku library dependency<br>first release</span>
-**total** | 67:00 |数独ぜぇ～！
+30/4/2018 | 4:50 | <span>difficulty levels<br>scores arranged by difficulty level and used help</span>
+**total** | 71:50 |数独ぜぇ～！

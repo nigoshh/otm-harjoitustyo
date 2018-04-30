@@ -20,6 +20,8 @@ public class Database {
     private final String createTableScore
             = "CREATE TABLE score "
             + "(user_id integer, "
+            + "level integer, "
+            + "help boolean, "
             + "score integer, "
             + "time timestamp, "
             + "FOREIGN KEY (user_id) REFERENCES user(id))";

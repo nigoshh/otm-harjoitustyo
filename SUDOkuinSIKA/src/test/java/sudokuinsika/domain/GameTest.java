@@ -25,7 +25,7 @@ public class GameTest {
         usersMgmt.createUser("test", password, "test");
         usersMgmt.logIn("test", password);
         game = new Game(usersMgmt);
-        game.createRiddle();
+        game.createRiddle(27);
     }
 
     @Test
@@ -93,5 +93,10 @@ public class GameTest {
             }
         }
         assertTrue(game.won());
+    }
+
+    @Test
+    public void wonReturnsFalseIfRiddleIsntSolved() throws SQLException {
+        assertFalse(game.won());
     }
 }

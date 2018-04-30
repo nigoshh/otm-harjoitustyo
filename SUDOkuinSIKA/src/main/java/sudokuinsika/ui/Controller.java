@@ -53,7 +53,7 @@ public class Controller implements Initializable {
 
     @FXML
     public void newRiddle() {
-        getGame().createRiddle();
+        getGame().createRiddle(23);
     }
 
     public MainApp getApp() {

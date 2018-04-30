@@ -44,7 +44,7 @@ public class LoginController extends Controller {
         if (game == null) {
             error.setText("wrong username and/or password! don't mess around");
         } else {
-            game.createRiddle();
+            game.createRiddle(29);
             setGame(game);
             getApp().getGameController().init();
             toGame(event);
