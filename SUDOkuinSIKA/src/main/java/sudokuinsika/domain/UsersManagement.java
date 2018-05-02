@@ -11,11 +11,15 @@ import javax.crypto.spec.PBEKeySpec;
 import sudokuinsika.dao.ScoreDao;
 import sudokuinsika.dao.UserDao;
 
+/**
+ * Manages users, creates games for them and manages their scores
+ */
 public class UsersManagement {
 
     private final UserDao userDao;
     private final ScoreDao scoreDao;
     private User loggedInUser;
+    private Game game;
 
     private int pwIterations = 100000;
 
@@ -26,6 +30,7 @@ public class UsersManagement {
     public UsersManagement(UserDao userDao, ScoreDao scoreDao) {
         this.userDao = userDao;
         this.scoreDao = scoreDao;
+        this.game = null;
     }
 
     private byte[] hashPassword(final char[] password, final byte[] salt,
@@ -59,6 +64,18 @@ public class UsersManagement {
         }
     }
 
+    /**
+     * If a User with the given username doesn't already exist in userDao,
+     * creates a new User, saves it to userDao, and returns true.
+     * Otherwise returns false.
+     *
+     * @param username the User's username
+     * @param password the User's password
+     * @param email the User's email address
+     * @return success of the User creating operation
+     * @throws SQLException
+     * @throws NoSuchAlgorithmException
+     */
     public boolean createUser(String username, char[] password, String email)
             throws SQLException, NoSuchAlgorithmException {
 
@@ -75,6 +92,16 @@ public class UsersManagement {
         return userDao.save(user);
     }
 
+    /**
+     * If username and password match with those of an existing User, logs in
+     * the User and returns a Game; otherwise returns null.
+     *
+     * @param username the User's username
+     * @param password the User's password
+     * @return a new Game, if username and password match with those
+     * of an existing User; otherwise null
+     * @throws SQLException
+     */
     public Game logIn(String username, char[] password) throws SQLException {
 
         loggedInUser = userDao.findOne(username);
@@ -86,9 +113,18 @@ public class UsersManagement {
                 loggedInUser.getPwIterations(), loggedInUser.getPwKeyLength());
         wipeSensitiveData(password);
         if (Arrays.equals(pwHash, loggedInUser.getPwHash())) {
-            return new Game(this);
+            game = new Game(this);
+            return game;
         }
         return null;
+    }
+
+    /**
+     * Logs out a User (loggedInUser)
+     */
+    public void logOut() {
+        game = null;
+        loggedInUser = null;
     }
 
     public User getLoggedInUser() {
@@ -101,5 +137,9 @@ public class UsersManagement {
 
     public void setPwIterations(int pwIterations) {
         this.pwIterations = pwIterations;
+    }
+
+    public Game getGame() {
+        return game;
     }
 }

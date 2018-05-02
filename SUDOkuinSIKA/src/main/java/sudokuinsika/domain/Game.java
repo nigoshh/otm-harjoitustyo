@@ -5,12 +5,14 @@ import de.sfuhrm.sudoku.GameMatrix;
 import de.sfuhrm.sudoku.Riddle;
 import java.sql.SQLException;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Random;
 
+/**
+ * Represents a sudoku game
+ */
 public class Game {
 
-    private UsersManagement usersMgmt;
+    private final UsersManagement usersMgmt;
     private Riddle riddle;
     private GameMatrix solution;
     private int level;
@@ -23,6 +25,15 @@ public class Game {
         this.usersMgmt = usersMgmt;
     }
 
+    /**
+     * If the given cell is writable, sets its value to the value contained
+     * in object variable cellWriteValue and returns true; otherwise it does
+     * nothing and returns false.
+     *
+     * @param row the given cell's row
+     * @param column the given cell's column
+     * @return success of the writing operation
+     */
     public boolean writeCell(int row, int column) {
         lastWriteTime = System.currentTimeMillis();
         if (isWritable(row, column)) {
@@ -32,6 +43,14 @@ public class Game {
         return false;
     }
 
+    /**
+     * Returns a String corresponding to the value of the given cell.
+     * When the cell's value is 0, it returns an empty String.
+     *
+     * @param row the given cell's row
+     * @param column the given cell's column
+     * @return a String corresponding to the value of the given cell
+     */
     public String cellToString(int row, int column) {
         byte value = riddle.get(row, column);
         String ret = "";
@@ -41,6 +60,12 @@ public class Game {
         return ret;
     }
 
+    /**
+     * Creates a new Riddle of the given difficulty level.
+     *
+     * @param level number of cells whose value is known at the beginning
+     * of the puzzle
+     */
     public void createRiddle(int level) {
         boolean success = false;
         while (!success) {
@@ -93,10 +118,23 @@ public class Game {
         }
     }
 
+    /**
+     * Returns true if the given cell is writable, false if it isn't.
+     *
+     * @param row the given cell's row
+     * @param column the given cell's column
+     * @return true if the given cell is writable, false if it isn't
+     */
     public boolean isWritable(int row, int column) {
         return riddle.getWritable(row, column);
     }
 
+    /**
+     * Checks that each digit appears at most once in each row, column and block.
+     *
+     * @return true if each digit appears at most once in each row, column and
+     * block, false otherwise
+     */
     public boolean checkPuzzle() {
         return riddle.isValid();
     }
@@ -109,10 +147,21 @@ public class Game {
         return riddle;
     }
 
+    /**
+     * Resets the game's timer, by updating object variable startTime.
+     */
     public void resetTimer() {
         startTime = System.currentTimeMillis();
     }
 
+    /**
+     * Returns a String corresponding to the time elapsed since the last Riddle
+     * was created.
+     *
+     * @see #createRiddle(int)
+     * @return a String corresponding to the time elapsed since the last Riddle
+     * was created
+     */
     public String timeElapsed() {
         long now = System.currentTimeMillis();
         long elapsedSeconds = (now - startTime) / 1000;
@@ -122,6 +171,12 @@ public class Game {
                 (elapsedSeconds % 60));
     }
 
+    /**
+     * Returns true if the puzzle is solved, otherwise false.
+     *
+     * @return true if the puzzle is solved, otherwise false
+     * @throws SQLException
+     */
     public boolean won() throws SQLException {
 
         if (riddle.getSetCount() == 81 && riddle.isValid()) {

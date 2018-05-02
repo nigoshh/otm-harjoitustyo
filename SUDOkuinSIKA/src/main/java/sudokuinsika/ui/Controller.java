@@ -15,11 +15,11 @@ public class Controller implements Initializable {
     private MainApp app;
     private UsersManagement usersMgmt;
 
-    public void setApp(MainApp app) {
+    protected void setApp(MainApp app) {
         this.app = app;
     }
 
-    public void setUsersMgmt(UsersManagement usersMgmt) {
+    protected void setUsersMgmt(UsersManagement usersMgmt) {
         this.usersMgmt = usersMgmt;
     }
 
@@ -47,28 +47,19 @@ public class Controller implements Initializable {
     }
 
     @FXML
-    public Game getGame() {
-        return app.getGame();
+    protected Game getGame() {
+        return app.getUsersMgmt().getGame();
     }
 
-    @FXML
-    public void newRiddle() {
-        getGame().createRiddle(23);
-    }
-
-    public MainApp getApp() {
+    protected MainApp getApp() {
         return app;
     }
 
-    public void setGame(Game game) {
-        app.setGame(game);
-    }
-
-    public UsersManagement getUsersMgmt() {
+    protected UsersManagement getUsersMgmt() {
         return usersMgmt;
     }
 
-    public void setCursor(Cursor cursor) {
+    protected void setCursor(Cursor cursor) {
         app.getStage().getScene().setCursor(cursor);
     }
 

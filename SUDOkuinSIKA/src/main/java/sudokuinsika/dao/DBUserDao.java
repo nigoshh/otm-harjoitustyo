@@ -3,6 +3,9 @@ package sudokuinsika.dao;
 import java.sql.*;
 import sudokuinsika.domain.User;
 
+/**
+ * Contains methods to get User data from userdata.db
+ */
 public class DBUserDao implements UserDao {
 
     private Database db;
@@ -11,6 +14,14 @@ public class DBUserDao implements UserDao {
         this.db = db;
     }
 
+    /**
+     * Finds a user from a SQL database file using the attribute username.
+     * If there isn't a user with that username, it returns null.
+     *
+     * @param username the user's username
+     * @return a User or null
+     * @throws SQLException
+     */
     @Override
     public User findOne(String username) throws SQLException {
         User user = new User(username);
@@ -32,6 +43,15 @@ public class DBUserDao implements UserDao {
         return user;
     }
 
+    /**
+     * Saves a User's data to a SQL database file and returns true,
+     * if no existing user has the same username; otherwise it doesn't save
+     * anything to the database file and returns false.
+     *
+     * @param user the User to save into the database file
+     * @return success of the saving operation
+     * @throws SQLException
+     */
     @Override
     public boolean save(User user) throws SQLException {
         Connection conn = db.getConnection();

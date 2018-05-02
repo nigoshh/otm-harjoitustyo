@@ -161,7 +161,7 @@
                   <Font size="21.0" />
                </font>
             </Hyperlink>
-            <Hyperlink fx:id="logOutLink" onAction="#toLogin" text="log out">
+            <Hyperlink fx:id="logOutLink" onAction="#logOut" text="log out">
                <font>
                   <Font size="21.0" />
                </font>

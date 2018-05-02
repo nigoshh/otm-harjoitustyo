@@ -75,6 +75,7 @@ public class MainApp extends Application {
         gameController = gameSceneLoader.getController();
         gameController.setApp(this);
         gameController.setUsersMgmt(usersMgmt);
+        gameController.init();
         gameScene = new Scene(gamePane);
 
         FXMLLoader scoresSceneLoader
@@ -112,12 +113,8 @@ public class MainApp extends Application {
         stage.setScene(scoresScene);
     }
 
-    public void setGame(Game game) {
-        this.game = game;
-    }
-
-    public Game getGame() {
-        return game;
+    public UsersManagement getUsersMgmt() {
+        return usersMgmt;
     }
 
     public void clearLoginScene() {

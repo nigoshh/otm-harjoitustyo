@@ -24,6 +24,9 @@ import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
 import sudokuinsika.domain.Game;
 
+/**
+ * Controls the game scene
+ */
 public class GameController extends Controller {
 
     @FXML
@@ -75,7 +78,6 @@ public class GameController extends Controller {
         drawBoard();
         level.setText("level " + game.getLevel());
         game.resetTimer();
-        startTimer();
         updateTimer();
     }
 
@@ -110,7 +112,7 @@ public class GameController extends Controller {
                 + "\n\nyou can create a new puzzle by selecting the desired level with the slider"
                 + "\nand then clicking on the \"new puzzle\" button"
                 + "\n\nthe level number represents the number of cells"
-                + "\nthat are already filled at the beginning"
+                + "\nthat are already filled in at the beginning"
                 + "\nso 79 is the easiest level, and 23 the hardest"
                 + "\n\nyou can check that all the digits you have input are valid"
                 + "\nby pressing the \"check puzzle\" button"
@@ -168,6 +170,12 @@ public class GameController extends Controller {
             default:
                 break;
         }
+    }
+
+    @FXML
+    private void logOut(ActionEvent event) {
+        getApp().getUsersMgmt().logOut();
+        toLogin(event);
     }
 
     private void createCellButtons() {
@@ -255,6 +263,9 @@ public class GameController extends Controller {
         return getGame().isWritable(row, column);
     }
 
+    /**
+     * Draws the sudoku board.
+     */
     public void drawBoard() {
         int i = 0;
         for (int row = 0; row < 9; row++) {
@@ -278,14 +289,19 @@ public class GameController extends Controller {
         sliderLabel.textProperty().bind(Bindings.convert(sliderValue));
     }
 
+    /**
+     * Initializes the game scene
+     */
     public void init() {
         createCellButtons();
-        drawBoard();
         createInputButtons();
         bindSliderAndLabel();
         startTimer();
     }
 
+    /**
+     * Cleans up the game scene.
+     */
     public void clear() {
         instructions.setVisited(false);
         logOutLink.setVisited(false);
@@ -294,16 +310,27 @@ public class GameController extends Controller {
         updateTimer();
     }
 
+    /**
+     * Cleans up the game scene for a new user, when coming from the login scene
+     */
+    public void clearForNewLogIn() {
+        slider.setValue(29);
+        newPuzzle.fire();
+    }
+
     private final Timeline timerTL = new Timeline(new KeyFrame(
             Duration.seconds(1), (ActionEvent event) -> {
-                updateTimer();
+        updateTimer();
     }));
 
     private void updateTimer() {
-        timer.setText(getGame().timeElapsed());
+        Game game = getGame();
+        if (game != null) {
+            timer.setText(game.timeElapsed());
+        }
     }
 
-    public void startTimer() {
+    private void startTimer() {
         timerTL.setCycleCount(Timeline.INDEFINITE);
         timerTL.play();
 
