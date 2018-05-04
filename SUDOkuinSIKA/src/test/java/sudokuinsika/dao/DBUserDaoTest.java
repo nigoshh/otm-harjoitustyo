@@ -41,5 +41,16 @@ public class DBUserDaoTest {
     @Test
     public void findOneReturnsNullForNonexistentUser() throws SQLException {
         assertEquals(null, dao.findOne("test"));
+        assertEquals(null, dao.findOne("estt"));
+        assertEquals(null, dao.findOne("tset"));
+        assertEquals(null, dao.findOne("sett"));
+    }
+
+    @Test
+    public void saveReturnsFalseIfUsernameAlreadyExists() throws SQLException {
+        User user1 = new User("test");
+        User user2 = new User("test");
+        dao.save(user1);
+        assertFalse(dao.save(user2));
     }
 }

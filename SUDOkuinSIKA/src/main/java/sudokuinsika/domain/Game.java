@@ -75,7 +75,6 @@ public class Game {
             success = fillRiddle(level);
         }
         this.level = level;
-        startTime = System.currentTimeMillis();
     }
 
     private boolean fillRiddle(int level) {
@@ -200,5 +199,9 @@ public class Game {
 
     public int getLevel() {
         return level;
+    }
+
+    public long getStartTime() {
+        return startTime;
     }
 }

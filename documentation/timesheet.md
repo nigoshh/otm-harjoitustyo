@@ -17,4 +17,5 @@ day | time | tasks
 24/4/2018 | 7:05 | <span>saving scores<br>top scores view<br>new tests<br>sequence diagram<br>update sudoku library dependency<br>first release</span>
 30/4/2018 | 4:50 | <span>difficulty levels<br>scores arranged by difficulty level and used help</span>
 2/5/2018 | 6:40 | <span>cleaner logout (and login)<br>Javadoc for some classes<br>started software architecture description<br>started user guide<br>week6 release</span>
-**total** | 78:30 |数独ぜぇ～！
+4/5/2018 | 3:00 | more tests
+**total** | 81:30 |数独ぜぇ～！

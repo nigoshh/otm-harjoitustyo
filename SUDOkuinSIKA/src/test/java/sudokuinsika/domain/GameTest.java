@@ -25,7 +25,17 @@ public class GameTest {
         usersMgmt.createUser("test", password, "test");
         usersMgmt.logIn("test", password);
         game = new Game(usersMgmt);
-        game.createRiddle(27);
+        game.createRiddle(29);
+    }
+
+    private void solve() {
+        GameMatrix solution = game.getSolution();
+        for (int row = 0; row < 9; row++) {
+            for (int column = 0; column < 9; column++) {
+                game.setCellWriteValue(solution.get(row, column));
+                game.writeCell(row, column);
+            }
+        }
     }
 
     @Test
@@ -85,18 +95,63 @@ public class GameTest {
 
     @Test
     public void wonReturnsTrueIfRiddleIsSolved() throws SQLException {
-        GameMatrix solution = game.getSolution();
-        for (int row = 0; row < 9; row++) {
-            for (int column = 0; column < 9; column++) {
-                game.setCellWriteValue(solution.get(row, column));
-                game.writeCell(row, column);
-            }
-        }
+        solve();
         assertTrue(game.won());
     }
 
     @Test
-    public void wonReturnsFalseIfRiddleIsntSolved() throws SQLException {
+    public void wonReturnsFalseIfRiddleIsntFilledButIsValid() throws SQLException {
         assertFalse(game.won());
+    }
+
+    @Test
+    public void wonReturnsFalseIfRiddleIsntFilledAndIsntValid() throws SQLException {
+        game.setCellWriteValue((byte) 1);
+        int i = 0;
+        writeSomeWrongNumbers:
+        for (int row = 0; row < 9; row++) {
+            for (int column = 0; column < 8; column++) {
+                if (game.getRiddle().getWritable(row, column)) {
+                    game.writeCell(row, column);
+                    i++;
+                    if (i == 51) {
+                        break;
+                    }
+                }
+            }
+        }
+        assertFalse(game.won());
+    }
+
+    @Test
+    public void wonReturnsFalseIfRiddleIsFilledButNotValid() throws SQLException {
+        solve();
+        changeOneCell:
+        for (int row = 0; row < 9; row++) {
+            for (int column = 0; column < 9; column++) {
+                if (game.getRiddle().getWritable(row, column)) {
+                    byte cellValue = game.getRiddle().get(row, column);
+                    cellValue++;
+                    if (cellValue == 10) {
+                        cellValue = 1;
+                    }
+                    game.setCellWriteValue(cellValue);
+                    game.writeCell(row, column);
+                    break changeOneCell;
+                }
+            }
+        }
+        assertFalse(game.won());
+    }
+
+    @Test
+    public void resetTimerResetsStartTimeValue() throws InterruptedException {
+        game.resetTimer();
+        Thread.sleep(1);
+        long now = System.currentTimeMillis();
+        assertTrue(now > game.getStartTime());
+        Thread.sleep(1);
+        game.resetTimer();
+        assertTrue(now < game.getStartTime());
     }
 }
