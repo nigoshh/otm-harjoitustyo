@@ -46,6 +46,9 @@
                <padding>
                   <Insets bottom="7.0" left="13.0" right="7.0" top="7.0" />
                </padding>
+               <font>
+                  <Font size="21.0" />
+               </font>
             </Label>
          </children>
       </VBox>

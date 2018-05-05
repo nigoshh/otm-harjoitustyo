@@ -78,7 +78,7 @@
             <property name='allowEmptyMethods' value='true' />
         </module>
 
-        <!-- JavaDoc --> <!--
+        <!-- JavaDoc -->
 
         <module name="JavadocMethod">
             <property name="scope" value="public"/>
@@ -92,7 +92,7 @@
         <module name="JavadocStyle">
             <property name="scope" value="public"/>
             <property name="checkEmptyJavadoc" value="true"/>
-        </module> -->
+        </module>
 
     </module>
 

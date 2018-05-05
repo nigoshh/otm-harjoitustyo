@@ -62,6 +62,12 @@ public class GameController extends Controller {
     @FXML
     private Label level;
 
+    @FXML
+    private Button giveUp;
+
+    @FXML
+    private Hyperlink settingsLink;
+
     private Button[] cellButtons;
     private RadioButton[] inputButtons;
     private String cellButtonBaseStyle
@@ -176,6 +182,12 @@ public class GameController extends Controller {
     private void logOut(ActionEvent event) {
         getApp().getUsersMgmt().logOut();
         toLogin(event);
+    }
+
+    @FXML
+    private void seeSolution() {
+        getGame().solve();
+        drawBoard();
     }
 
     private void createCellButtons() {
@@ -306,6 +318,7 @@ public class GameController extends Controller {
         instructions.setVisited(false);
         logOutLink.setVisited(false);
         topScoresLink.setVisited(false);
+        settingsLink.setVisited(false);
         check.requestFocus();
         updateTimer();
     }

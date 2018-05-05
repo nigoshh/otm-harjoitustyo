@@ -189,6 +189,20 @@ public class Game {
         return false;
     }
 
+    /**
+     * Solves the riddle.
+     */
+    public void solve() {
+        for (int row = 0; row < 9; row++) {
+            for (int column = 0; column < 9; column++) {
+                setCellWriteValue(solution.get(row, column));
+                if (writeCell(row, column)) {
+                    riddle.setWritable(row, column, false);
+                }
+            }
+        }
+    }
+
     public GameMatrix getSolution() {
         return solution;
     }

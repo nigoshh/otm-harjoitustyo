@@ -19,21 +19,24 @@ import sudokuinsika.domain.UsersManagement;
 
 public class MainApp extends Application {
 
+    private UsersManagement usersMgmt;
+
+    private UserDao userDao;
+    private ScoreDao scoreDao;
+
     private Stage stage;
+
     private Scene loginScene;
     private Scene newUserScene;
     private Scene gameScene;
     private Scene scoresScene;
-    private UserDao userDao;
-    private ScoreDao scoreDao;
-    private UsersManagement usersMgmt;
+    private Scene settingsScene;
 
     private LoginController loginController;
     private NewUserController newUserController;
     private GameController gameController;
     private ScoresController scoresController;
-
-    private Game game;
+    private SettingsController settingsController;
 
     @Override
     public void init() throws Exception {
@@ -86,6 +89,14 @@ public class MainApp extends Application {
         scoresController.setUsersMgmt(usersMgmt);
         scoresController.init();
         scoresScene = new Scene(scoresPane);
+
+        FXMLLoader settingsSceneLoader
+                = new FXMLLoader(getClass().getResource("/fxml/Settings.fxml"));
+        Parent settingsPane = settingsSceneLoader.load();
+        settingsController = settingsSceneLoader.getController();
+        settingsController.setApp(this);
+        settingsController.setUsersMgmt(usersMgmt);
+        settingsScene = new Scene(settingsPane);
     }
 
     @Override
@@ -113,6 +124,10 @@ public class MainApp extends Application {
         stage.setScene(scoresScene);
     }
 
+    public void stageSettingsScene() {
+        stage.setScene(settingsScene);
+    }
+
     public UsersManagement getUsersMgmt() {
         return usersMgmt;
     }
@@ -131,6 +146,10 @@ public class MainApp extends Application {
 
     public void clearScoresScene() throws SQLException {
         scoresController.clear();
+    }
+
+    public void clearSettingsScene() {
+        settingsController.clear();
     }
 
     public Scene getGameScene() {

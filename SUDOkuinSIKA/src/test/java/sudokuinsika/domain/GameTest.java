@@ -28,16 +28,6 @@ public class GameTest {
         game.createRiddle(29);
     }
 
-    private void solve() {
-        GameMatrix solution = game.getSolution();
-        for (int row = 0; row < 9; row++) {
-            for (int column = 0; column < 9; column++) {
-                game.setCellWriteValue(solution.get(row, column));
-                game.writeCell(row, column);
-            }
-        }
-    }
-
     @Test
     public void isWritableReturnsTrueIfCellIsWritable() {
         game.getRiddle().setWritable(0, 0, true);
@@ -95,7 +85,7 @@ public class GameTest {
 
     @Test
     public void wonReturnsTrueIfRiddleIsSolved() throws SQLException {
-        solve();
+        game.solve();
         assertTrue(game.won());
     }
 
@@ -125,22 +115,18 @@ public class GameTest {
 
     @Test
     public void wonReturnsFalseIfRiddleIsFilledButNotValid() throws SQLException {
-        solve();
-        changeOneCell:
-        for (int row = 0; row < 9; row++) {
-            for (int column = 0; column < 9; column++) {
-                if (game.getRiddle().getWritable(row, column)) {
-                    byte cellValue = game.getRiddle().get(row, column);
-                    cellValue++;
-                    if (cellValue == 10) {
-                        cellValue = 1;
-                    }
-                    game.setCellWriteValue(cellValue);
-                    game.writeCell(row, column);
-                    break changeOneCell;
-                }
-            }
+        int[] cell = findFirstWritableCell();
+        int row = cell[0];
+        int column = cell[1];
+        game.solve();
+        byte cellValue = game.getRiddle().get(row, column);
+        cellValue++;
+        if (cellValue == 10) {
+            cellValue = 1;
         }
+        game.setCellWriteValue(cellValue);
+        game.getRiddle().setWritable(row, column, true);
+        game.writeCell(row, column);
         assertFalse(game.won());
     }
 
@@ -153,5 +139,19 @@ public class GameTest {
         Thread.sleep(1);
         game.resetTimer();
         assertTrue(now < game.getStartTime());
+    }
+
+    private int[] findFirstWritableCell() {
+        for (int row = 0; row < 9; row++) {
+            for (int column = 0; column < 9; column++) {
+                if (game.getRiddle().getWritable(row, column)) {
+                    int[] cell = new int[2];
+                    cell[0] = row;
+                    cell[1] = column;
+                    return cell;
+                }
+            }
+        }
+        return new int[2];
     }
 }

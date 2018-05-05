@@ -78,18 +78,46 @@ public class UsersManagement {
      */
     public boolean createUser(String username, char[] password, String email)
             throws SQLException, NoSuchAlgorithmException {
-
-        byte[] pwSalt = getSalt();
-        byte[] pwHash =
-                hashPassword(password, pwSalt, pwIterations, pwKeyLength);
         User user = new User(username);
-        wipeSensitiveData(password);
-        user.setPwHash(pwHash);
-        user.setPwSalt(pwSalt);
-        user.setPwIterations(pwIterations);
-        user.setPwKeyLength(pwKeyLength);
+        setPasswordData(user, password);
         user.setEmail(email);
         return userDao.save(user);
+    }
+
+    public boolean checkUsernameLength(String username) {
+        return username.length() > 0 && username.length() <= 230;
+    }
+
+    public boolean checkPasswordLength(String password) {
+        return password.length() > 9 && password.length() <= 1000;
+    }
+
+    public boolean checkEmailLength(String email) {
+        return email.length() <= 230;
+    }
+
+    public boolean changeUsername(String newUsername) throws SQLException {
+        if (userDao.changeUsername(loggedInUser.getUsername(), newUsername)) {
+            loggedInUser.setUsername(newUsername);
+            return true;
+        }
+        return false;
+    }
+
+    public void changePassword(char[] password)
+            throws NoSuchAlgorithmException, SQLException {
+        setPasswordData(loggedInUser, password);
+        userDao.changePasswordData(loggedInUser);
+    }
+
+    public void changeEmail(String newEmail) throws SQLException {
+        userDao.changeEmail(loggedInUser.getUsername(), newEmail);
+        loggedInUser.setEmail(newEmail);
+    }
+
+    public void deleteUser() throws SQLException {
+        userDao.delete(loggedInUser.getId());
+        logOut();
     }
 
     /**
@@ -109,10 +137,7 @@ public class UsersManagement {
             wipeSensitiveData(password);
             return null;
         }
-        byte[] pwHash = hashPassword(password, loggedInUser.getPwSalt(),
-                loggedInUser.getPwIterations(), loggedInUser.getPwKeyLength());
-        wipeSensitiveData(password);
-        if (Arrays.equals(pwHash, loggedInUser.getPwHash())) {
+        if (checkPassword(password)) {
             game = new Game(this);
             return game;
         }
@@ -125,6 +150,23 @@ public class UsersManagement {
     public void logOut() {
         game = null;
         loggedInUser = null;
+    }
+
+    public boolean checkPassword(char[] password) {
+        byte[] pwHash = hashPassword(password, loggedInUser.getPwSalt(),
+                loggedInUser.getPwIterations(), loggedInUser.getPwKeyLength());
+        wipeSensitiveData(password);
+        return Arrays.equals(pwHash, loggedInUser.getPwHash());
+    }
+
+    private void setPasswordData(User user, char[] password) throws NoSuchAlgorithmException {
+        byte[] pwSalt = getSalt();
+        byte[] pwHash = hashPassword(password, pwSalt, pwIterations, pwKeyLength);
+        wipeSensitiveData(password);
+        user.setPwHash(pwHash);
+        user.setPwSalt(pwSalt);
+        user.setPwIterations(pwIterations);
+        user.setPwKeyLength(pwKeyLength);
     }
 
     public User getLoggedInUser() {

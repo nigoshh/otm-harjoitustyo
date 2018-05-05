@@ -41,9 +41,16 @@ public class Controller implements Initializable {
         app.stageGameScene();
     }
 
-    @FXML protected void toScores(ActionEvent event) throws SQLException {
+    @FXML
+    protected void toScores(ActionEvent event) throws SQLException {
         app.clearScoresScene();
         app.stageScoresScene();
+    }
+
+    @FXML
+    protected void toSettings(ActionEvent event) {
+        app.clearSettingsScene();
+        app.stageSettingsScene();
     }
 
     @FXML
@@ -65,7 +72,5 @@ public class Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
     }
-
 }

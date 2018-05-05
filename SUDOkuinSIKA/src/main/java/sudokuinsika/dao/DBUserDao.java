@@ -49,13 +49,13 @@ public class DBUserDao implements UserDao {
      * anything to the database file and returns false.
      *
      * @param user the User to save into the database file
-     * @return success of the saving operation
+     * @return success of the save operation
      * @throws SQLException
      */
     @Override
     public boolean save(User user) throws SQLException {
         Connection conn = db.getConnection();
-        if (checkIfAlreadyExists(user, conn)) {
+        if (checkIfAlreadyExists(user.getUsername(), conn)) {
             conn.close();
             return false;
         }
@@ -74,11 +74,76 @@ public class DBUserDao implements UserDao {
         return true;
     }
 
-    private boolean checkIfAlreadyExists(User user, Connection conn)
+    @Override
+    public boolean changeUsername(String oldUsername, String newUsername) throws SQLException {
+        Connection conn = db.getConnection();
+        if (checkIfAlreadyExists(newUsername, conn)) {
+            conn.close();
+            return false;
+        }
+        String query = "UPDATE user SET username = ? WHERE username = ?";
+        PreparedStatement stmt = conn.prepareStatement(query);
+        stmt.setString(1, newUsername);
+        stmt.setString(2, oldUsername);
+        stmt.executeUpdate();
+        stmt.close();
+        conn.close();
+        return true;
+    }
+
+    @Override
+    public void changePasswordData(User user) throws SQLException {
+        Connection conn = db.getConnection();
+        String query = "UPDATE user SET pwhash = ?, pwsalt = ?, "
+                + "pwiterations = ?, pwkeylength = ? WHERE username = ?";
+        PreparedStatement stmt = conn.prepareStatement(query);
+        stmt.setBytes(1, user.getPwHash());
+        stmt.setBytes(2, user.getPwSalt());
+        stmt.setInt(3, user.getPwIterations());
+        stmt.setInt(4, user.getPwKeyLength());
+        stmt.setString(5, user.getUsername());
+        stmt.executeUpdate();
+        stmt.close();
+        conn.close();
+    }
+
+    @Override
+    public void changeEmail(String username, String newEmail) throws SQLException {
+        Connection conn = db.getConnection();
+        String query = "UPDATE user SET email = ? WHERE username = ?";
+        PreparedStatement stmt = conn.prepareStatement(query);
+        stmt.setString(1, newEmail);
+        stmt.setString(2, username);
+        stmt.executeUpdate();
+        stmt.close();
+        conn.close();
+    }
+
+    @Override
+    public void delete(int userId) throws SQLException {
+        Connection conn = db.getConnection();
+        conn.setAutoCommit(false);
+        PreparedStatement stmt1 = conn.prepareStatement("DELETE FROM user WHERE id = ?");
+        PreparedStatement stmt2 = conn.prepareStatement("DELETE FROM score WHERE user_id = ?");
+        stmt1.setInt(1, userId);
+        stmt2.setInt(1, userId);
+        int rowAffected = stmt1.executeUpdate();
+        if (rowAffected != 1) {
+            conn.rollback();
+        }
+        stmt2.executeUpdate();
+        conn.commit();
+
+        stmt1.close();
+        stmt2.close();
+        conn.close();
+    }
+
+    private boolean checkIfAlreadyExists(String username, Connection conn)
             throws SQLException {
         String query = "SELECT id FROM user WHERE username = ?";
         PreparedStatement stmt = conn.prepareStatement(query);
-        stmt.setString(1, user.getUsername());
+        stmt.setString(1, username);
 
         ResultSet rs = stmt.executeQuery();
         boolean hasOne = rs.next();
