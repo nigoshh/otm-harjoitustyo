@@ -74,22 +74,22 @@
             </Label>
             <Label fx:id="errorCurrentPW" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="3">
                <font>
-                  <Font size="23.0" />
+                  <Font size="17.0" />
                </font>
             </Label>
             <Label fx:id="errorNewUsername" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="5">
                <font>
-                  <Font size="23.0" />
+                  <Font size="17.0" />
                </font>
             </Label>
             <Label fx:id="errorNewPW" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="8">
                <font>
-                  <Font size="23.0" />
+                  <Font size="17.0" />
                </font>
             </Label>
             <Label fx:id="errorNewEmail" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="10">
                <font>
-                  <Font size="23.0" />
+                  <Font size="17.0" />
                </font>
             </Label>
             <PasswordField fx:id="currentPW" promptText="current password" GridPane.columnIndex="1" GridPane.rowIndex="2">

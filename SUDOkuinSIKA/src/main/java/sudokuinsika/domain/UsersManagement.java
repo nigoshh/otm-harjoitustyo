@@ -116,7 +116,7 @@ public class UsersManagement {
     }
 
     public void deleteUser() throws SQLException {
-        userDao.delete(loggedInUser.getId());
+        userDao.delete(loggedInUser);
         logOut();
     }
 

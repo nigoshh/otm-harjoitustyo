@@ -4,7 +4,7 @@ import java.sql.*;
 import sudokuinsika.domain.User;
 
 /**
- * Contains methods to get User data from userdata.db
+ * Contains methods to get User data from an SQL database.
  */
 public class DBUserDao implements UserDao {
 
@@ -120,13 +120,13 @@ public class DBUserDao implements UserDao {
     }
 
     @Override
-    public void delete(int userId) throws SQLException {
+    public void delete(User user) throws SQLException {
         Connection conn = db.getConnection();
         conn.setAutoCommit(false);
         PreparedStatement stmt1 = conn.prepareStatement("DELETE FROM user WHERE id = ?");
         PreparedStatement stmt2 = conn.prepareStatement("DELETE FROM score WHERE user_id = ?");
-        stmt1.setInt(1, userId);
-        stmt2.setInt(1, userId);
+        stmt1.setInt(1, user.getId());
+        stmt2.setInt(1, user.getId());
         int rowAffected = stmt1.executeUpdate();
         if (rowAffected != 1) {
             conn.rollback();

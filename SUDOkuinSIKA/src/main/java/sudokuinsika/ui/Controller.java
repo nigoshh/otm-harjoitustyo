@@ -15,6 +15,13 @@ public class Controller implements Initializable {
     private MainApp app;
     private UsersManagement usersMgmt;
 
+    protected final String errorUsernameTaken = "username already taken, choose another one mate";
+    protected final String errorUsernameLength = "username length must be between 1 and 230 characters";
+    protected final String errorPWLength = "password length must be between 10 and 1000 characters";
+    protected final String errorPWFieldsMatch = "\"password\" and \"repeat password\" didn't match";
+    protected final String errorNewPWFieldsMatch = "\"new password\" and \"repeat new password\" didn't match";
+    protected final String errorEmailLength = "email length must be between 0 and 230 characters";
+
     protected void setApp(MainApp app) {
         this.app = app;
     }

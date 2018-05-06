@@ -55,10 +55,10 @@ public class SettingsController extends Controller {
                 if (getUsersMgmt().changeUsername(newUsername.getText())) {
                     displaySuccessMessage("username");
                 } else {
-                    errorNewUsername.setText("this username is taken, choose another one");
+                    errorNewUsername.setText(errorUsernameTaken);
                 }
             } else {
-                errorNewUsername.setText("username length must be between 1 and 230 characters");
+                errorNewUsername.setText(errorUsernameLength);
             }
         } else {
             displayCurrentPasswordError();
@@ -69,17 +69,17 @@ public class SettingsController extends Controller {
     private void changePassword(ActionEvent event) throws NoSuchAlgorithmException, SQLException {
         clearErrors();
         if (checkCurrentPW()) {
-            if (newPW.getText().equals(repeatNewPW.getText())) {
-                if (getUsersMgmt().checkPasswordLength(newPW.getText())) {
+            if (getUsersMgmt().checkPasswordLength(newPW.getText())) {
+                if (newPW.getText().equals(repeatNewPW.getText())) {
                     char[] newPassword = newPW.getText().toCharArray();
                     clearNewPWFields();
                     getUsersMgmt().changePassword(newPassword);
                     displaySuccessMessage("password");
                 } else {
-                    errorNewPW.setText("password length must be between 10 and 1000 characters");
+                    errorNewPW.setText(errorNewPWFieldsMatch);
                 }
             } else {
-                errorNewPW.setText("\"new password\" and \"repeat new password\" didn't match");
+                errorNewPW.setText(errorPWLength);
             }
         } else {
             displayCurrentPasswordError();
@@ -96,7 +96,7 @@ public class SettingsController extends Controller {
                 getUsersMgmt().changeEmail(newEmail.getText());
                 displaySuccessMessage("email");
             } else {
-                errorNewEmail.setText("email length must be between 0 and 230 characters");
+                errorNewEmail.setText(errorEmailLength);
             }
         } else {
             displayCurrentPasswordError();
@@ -144,6 +144,7 @@ public class SettingsController extends Controller {
     private void displayWarning() throws SQLException {
         String title= "destroy everything you've worked for";
         Alert alert = new Alert(AlertType.CONFIRMATION, title, ButtonType.YES, ButtonType.NO);
+        alert.setTitle(title);
         alert.setHeaderText(null);
         String message = "you sure you wanna obliterate all your data forever mate?";
         alert.setContentText(message);
@@ -152,10 +153,6 @@ public class SettingsController extends Controller {
         if (alert.getResult() == ButtonType.YES) {
             getUsersMgmt().deleteUser();
             toLogin(new ActionEvent());
-        }
-
-        if (alert.getResult() == ButtonType.NO) {
-            alert.close();
         }
     }
 

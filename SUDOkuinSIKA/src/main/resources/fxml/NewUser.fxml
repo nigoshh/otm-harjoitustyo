@@ -25,6 +25,14 @@
          <font>
             <Font size="17.0" />
          </font></TextField>
+      <Label fx:id="errorUsername" textFill="RED">
+         <padding>
+            <Insets bottom="7.0" left="7.0" right="7.0" top="7.0" />
+         </padding>
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
       <PasswordField fx:id="password" onKeyPressed="#createUserPressingEnter" promptText="password">
          <VBox.margin>
             <Insets bottom="7.0" left="7.0" right="7.0" top="7.0" />
@@ -41,6 +49,14 @@
             <Font size="17.0" />
          </font>
       </PasswordField>
+      <Label fx:id="errorPW" textFill="RED">
+         <padding>
+            <Insets bottom="7.0" left="7.0" right="7.0" top="7.0" />
+         </padding>
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
       <TextField fx:id="email" onKeyPressed="#createUserPressingEnter" promptText="email">
          <VBox.margin>
             <Insets bottom="7.0" left="7.0" right="7.0" top="7.0" />
@@ -49,15 +65,18 @@
             <Font size="17.0" />
          </font>
       </TextField>
+      <Label fx:id="errorEmail" textFill="RED">
+         <padding>
+            <Insets bottom="7.0" left="7.0" right="7.0" top="7.0" />
+         </padding>
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
       <Button fx:id="create" mnemonicParsing="false" onAction="#create" text="create new user">
          <font>
             <Font size="17.0" />
          </font></Button>
-      <Label fx:id="error" textFill="RED">
-         <padding>
-            <Insets bottom="7.0" left="7.0" right="7.0" top="7.0" />
-         </padding>
-      </Label>
       <Region prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
       <Hyperlink fx:id="logInLink" onAction="#toLogin" text="been here before?">
          <font>

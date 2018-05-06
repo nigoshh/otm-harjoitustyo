@@ -319,7 +319,7 @@ public class GameController extends Controller {
         logOutLink.setVisited(false);
         topScoresLink.setVisited(false);
         settingsLink.setVisited(false);
-        check.requestFocus();
+        level.requestFocus();
         updateTimer();
     }
 

@@ -7,7 +7,7 @@ import sudokuinsika.domain.User;
 
 public class FakeUserDao implements UserDao {
 
-    public Map<String, User> users;
+    private final Map<String, User> users;
 
     public FakeUserDao() {
         users = new HashMap<>();
@@ -20,26 +20,42 @@ public class FakeUserDao implements UserDao {
 
     @Override
     public boolean save(User user) throws SQLException {
-        return users.putIfAbsent(user.getUsername(), user) == null;
+        if (users.containsKey(user.getUsername())) {
+            return false;
+        }
+        users.put(user.getUsername(), user);
+        return true;
     }
 
     @Override
     public boolean changeUsername(String oldUsername, String newUsername) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (users.containsKey(newUsername)) {
+            return false;
+        }
+        users.put(newUsername, users.remove(oldUsername));
+        return true;
     }
 
     @Override
     public void changePasswordData(User user) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        User toUpdate = users.get(user.getUsername());
+        toUpdate.setPwHash(user.getPwHash());
+        toUpdate.setPwSalt(user.getPwSalt());
+        toUpdate.setPwIterations(user.getPwIterations());
+        toUpdate.setPwKeyLength(user.getPwKeyLength());
     }
 
     @Override
     public void changeEmail(String username, String newEmail) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        users.get(username).setEmail(newEmail);
     }
 
     @Override
-    public void delete(int userId) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void delete(User user) throws SQLException {
+        users.remove(user.getUsername());
+    }
+
+    public Map<String, User> getUsers() {
+        return users;
     }
 }

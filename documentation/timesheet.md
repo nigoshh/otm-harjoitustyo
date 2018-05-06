@@ -18,5 +18,6 @@ day | time | tasks
 30/4/2018 | 4:50 | <span>difficulty levels<br>scores arranged by difficulty level and used help</span>
 2/5/2018 | 6:40 | <span>cleaner logout (and login)<br>Javadoc for some classes<br>started software architecture description<br>started user guide<br>week6 release</span>
 4/5/2018 | 3:00 | more tests
-5/5/2018 | 6:00 | <span>give up and see puzzle solution<br>settings scene<br>update user data<br>delete user data<br></span>
-**total** | 81:30 |数独ぜぇ～！
+5/5/2018 | 6:00 | <span>give up and see puzzle solution<br>settings scene<br>update user data<br>delete user data</span>
+6/5/2018 | 4:45 | <span>move input length check from ui to domain<br>more precise error messages in new user scene<br>some refactoring in MainApp<br>FakeUserDao methods implementation<br>lots of tests</span>
+**total** | 92:15 |数独ぜぇ～！

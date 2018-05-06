@@ -27,7 +27,13 @@ public class NewUserController extends Controller {
     private TextField email;
 
     @FXML
-    private Label error;
+    private Label errorUsername;
+
+    @FXML
+    private Label errorPW;
+
+    @FXML
+    private Label errorEmail;
 
     @FXML
     private Button create;
@@ -38,44 +44,36 @@ public class NewUserController extends Controller {
     @FXML
     private void create(ActionEvent event)
             throws SQLException, NoSuchAlgorithmException {
+        clearErrors();
+        boolean usernameLengthOK = getUsersMgmt().checkUsernameLength(username.getText());
+        boolean passwordLengthOK = getUsersMgmt().checkPasswordLength(password.getText());
+        boolean emailLengthOK = getUsersMgmt().checkEmailLength(email.getText());
 
-        if (username.getLength() == 0
-                || password.getLength() == 0
-                || repeatPW.getLength() == 0) {
-
-            error.setText("please fill in all required fields (all but email)");
-
-        } else if (password.getLength() < 10
-                || password.getLength() > 1000
-                || username.getLength() > 230
-                || email.getLength() > 230) {
-
-            error.setText("username length must be between 1 and 230 characters"
-                    + "\npassword length must be between 10 and 1000 characters"
-                    + "\nemail length must be between 0 and 230 characters");
-
+        if (!usernameLengthOK || !passwordLengthOK || !emailLengthOK) {
+            if (!usernameLengthOK) {
+                errorUsername.setText(errorUsernameLength);
+            }
+            if (!passwordLengthOK) {
+                errorPW.setText(errorPWLength);
+            }
+            if (!emailLengthOK) {
+                errorEmail.setText(errorEmailLength);
+            }
         } else {
-
             if (password.getText().equals(repeatPW.getText())) {
-
                 setCursor(Cursor.WAIT);
                 if (getUsersMgmt().createUser(username.getText(),
                         password.getText().toCharArray(), email.getText())) {
-                    error.setText("");
                     toLogin(event);
                 } else {
-                    error.setText(
-                            "username already in use, choose another one mate");
+                    errorUsername.setText(errorUsernameTaken);
                 }
                 setCursor(Cursor.DEFAULT);
-
             } else {
-                error.setText(
-                        "\"password\" and \"repeat password\" don't match");
+                errorPW.setText(errorPWFieldsMatch);
             }
         }
 
-        username.setText("");
         password.setText("");
         repeatPW.setText("");
     }
@@ -96,8 +94,14 @@ public class NewUserController extends Controller {
         password.setText("");
         repeatPW.setText("");
         email.setText("");
-        error.setText("");
+        clearErrors();
         logInLink.setVisited(false);
-        create.requestFocus();
+        errorUsername.requestFocus();
+    }
+
+    private void clearErrors() {
+        errorUsername.setText("");
+        errorPW.setText("");
+        errorEmail.setText("");
     }
 }

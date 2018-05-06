@@ -14,7 +14,6 @@ import sudokuinsika.dao.DBUserDao;
 import sudokuinsika.dao.Database;
 import sudokuinsika.dao.ScoreDao;
 import sudokuinsika.dao.UserDao;
-import sudokuinsika.domain.Game;
 import sudokuinsika.domain.UsersManagement;
 
 public class MainApp extends Application {
@@ -53,50 +52,69 @@ public class MainApp extends Application {
         scoreDao = new DBScoreDao(db);
         usersMgmt = new UsersManagement(userDao, scoreDao);
 
-//        // why doesn't this work?
-//        initScene("/fxml/Login.fxml", loginController, loginScene);
+        Pair login = createScene("/fxml/Login.fxml");
+        loginController = (LoginController) login.controller;
+        loginScene = login.scene;
 
-        FXMLLoader loginSceneLoader
-                = new FXMLLoader(getClass().getResource("/fxml/Login.fxml"));
-        Parent loginPane = loginSceneLoader.load();
-        loginController = loginSceneLoader.getController();
-        loginController.setApp(this);
-        loginController.setUsersMgmt(usersMgmt);
-        loginScene = new Scene(loginPane);
+        Pair newUser = createScene("/fxml/NewUser.fxml");
+        newUserController = (NewUserController) newUser.controller;
+        newUserScene = newUser.scene;
 
-        FXMLLoader newUserSceneLoader
-                = new FXMLLoader(getClass().getResource("/fxml/NewUser.fxml"));
-        Parent newUserPane = newUserSceneLoader.load();
-        newUserController = newUserSceneLoader.getController();
-        newUserController.setApp(this);
-        newUserController.setUsersMgmt(usersMgmt);
-        newUserScene = new Scene(newUserPane);
-
-        FXMLLoader gameSceneLoader
-                = new FXMLLoader(getClass().getResource("/fxml/Game.fxml"));
-        Parent gamePane = gameSceneLoader.load();
-        gameController = gameSceneLoader.getController();
-        gameController.setApp(this);
-        gameController.setUsersMgmt(usersMgmt);
+        Pair game = createScene("/fxml/Game.fxml");
+        gameController = (GameController) game.controller;
+        gameScene = game.scene;
         gameController.init();
-        gameScene = new Scene(gamePane);
 
-        FXMLLoader scoresSceneLoader
-                = new FXMLLoader(getClass().getResource("/fxml/Scores.fxml"));
-        Parent scoresPane = scoresSceneLoader.load();
-        scoresController = scoresSceneLoader.getController();
-        scoresController.setApp(this);
-        scoresController.setUsersMgmt(usersMgmt);
+        Pair scores = createScene("/fxml/Scores.fxml");
+        scoresController = (ScoresController) scores.controller;
+        scoresScene = scores.scene;
         scoresController.init();
-        scoresScene = new Scene(scoresPane);
 
-        FXMLLoader settingsSceneLoader
-                = new FXMLLoader(getClass().getResource("/fxml/Settings.fxml"));
-        Parent settingsPane = settingsSceneLoader.load();
-        settingsController = settingsSceneLoader.getController();
-        settingsController.setApp(this);
-        settingsController.setUsersMgmt(usersMgmt);
-        settingsScene = new Scene(settingsPane);
+        Pair settings = createScene("/fxml/Settings.fxml");
+        settingsController = (SettingsController) settings.controller;
+        settingsScene = settings.scene;
+
+//        FXMLLoader loginSceneLoader
+//                = new FXMLLoader(getClass().getResource("/fxml/Login.fxml"));
+//        Parent loginPane = loginSceneLoader.load();
+//        loginController = loginSceneLoader.getController();
+//        loginController.setApp(this);
+//        loginController.setUsersMgmt(usersMgmt);
+//        loginScene = new Scene(loginPane);
+//
+//        FXMLLoader newUserSceneLoader
+//                = new FXMLLoader(getClass().getResource("/fxml/NewUser.fxml"));
+//        Parent newUserPane = newUserSceneLoader.load();
+//        newUserController = newUserSceneLoader.getController();
+//        newUserController.setApp(this);
+//        newUserController.setUsersMgmt(usersMgmt);
+//        newUserScene = new Scene(newUserPane);
+//
+//        FXMLLoader gameSceneLoader
+//                = new FXMLLoader(getClass().getResource("/fxml/Game.fxml"));
+//        Parent gamePane = gameSceneLoader.load();
+//        gameController = gameSceneLoader.getController();
+//        gameController.setApp(this);
+//        gameController.setUsersMgmt(usersMgmt);
+//        gameController.init();
+//        gameScene = new Scene(gamePane);
+//
+//        FXMLLoader scoresSceneLoader
+//                = new FXMLLoader(getClass().getResource("/fxml/Scores.fxml"));
+//        Parent scoresPane = scoresSceneLoader.load();
+//        scoresController = scoresSceneLoader.getController();
+//        scoresController.setApp(this);
+//        scoresController.setUsersMgmt(usersMgmt);
+//        scoresController.init();
+//        scoresScene = new Scene(scoresPane);
+//
+//        FXMLLoader settingsSceneLoader
+//                = new FXMLLoader(getClass().getResource("/fxml/Settings.fxml"));
+//        Parent settingsPane = settingsSceneLoader.load();
+//        settingsController = settingsSceneLoader.getController();
+//        settingsController.setApp(this);
+//        settingsController.setUsersMgmt(usersMgmt);
+//        settingsScene = new Scene(settingsPane);
     }
 
     @Override
@@ -168,15 +186,21 @@ public class MainApp extends Application {
         return gameController;
     }
 
-    private void initScene(String fxmlPath, Controller controller, Scene scene)
-            throws IOException {
-
+    private Pair createScene(String fxmlPath) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
         Parent pane = loader.load();
-        controller = loader.getController();
+        Controller controller = loader.getController();
         controller.setApp(this);
         controller.setUsersMgmt(usersMgmt);
-        scene = new Scene(pane);
+        Pair ret = new Pair();
+        ret.controller = controller;
+        ret.scene = new Scene(pane);
+        return ret;
+    }
+
+    private class Pair {
+        private Scene scene;
+        private Controller controller;
     }
 
     @Override

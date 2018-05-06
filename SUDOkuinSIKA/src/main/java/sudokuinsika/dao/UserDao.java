@@ -59,8 +59,8 @@ public interface UserDao {
 
     /**
      * Deletes a user from a file.
-     * @param userId the user's ID
+     * @param user the user we are deleting
      * @throws SQLException
      */
-    void delete(int userId) throws SQLException;
+    void delete(User user) throws SQLException;
 }
