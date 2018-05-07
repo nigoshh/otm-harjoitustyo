@@ -9,11 +9,8 @@ import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.time.Duration;
-import java.time.ZonedDateTime;
 import java.util.List;
 import static org.junit.Assert.*;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import sudokuinsika.domain.Score;
@@ -53,8 +50,8 @@ public class DBScoreDaoTest {
     public void saveSavesScoreAndFindScoresUserFindsIt() throws SQLException {
         User user = new User("test");
         user.setId(1);
-        
-        scoreDao.save(1, 35, true, 323120, 380912742);
+
+        scoreDao.save(user, 35, true, 323120, 380912742);
         List<Score> scores = scoreDao.findScores(user, 35, true);
         Score score = scores.get(0);
         assertEquals(323120, score.getScore().toMillis());
@@ -67,7 +64,7 @@ public class DBScoreDaoTest {
         user.setId(1);
         userDao.save(user);
 
-        scoreDao.save(1, 52, false, 254230, 97391572);
+        scoreDao.save(user, 52, false, 254230, 97391572);
         List<Score> scores = scoreDao.findScores(52, false);
         Score score = scores.get(0);
         assertEquals("test", score.getUser().getUsername());

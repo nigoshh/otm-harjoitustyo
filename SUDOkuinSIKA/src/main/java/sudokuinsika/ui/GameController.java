@@ -18,6 +18,7 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Slider;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
@@ -45,9 +46,6 @@ public class GameController extends Controller {
     private Label timer;
 
     @FXML
-    private Button check;
-
-    @FXML
     private Button newPuzzle;
 
     @FXML
@@ -63,19 +61,25 @@ public class GameController extends Controller {
     private Label level;
 
     @FXML
-    private Button giveUp;
+    private Hyperlink settingsLink;
 
     @FXML
-    private Hyperlink settingsLink;
+    private ToggleButton smallDigits;
 
     private Button[] cellButtons;
     private RadioButton[] inputButtons;
-    private String cellButtonBaseStyle
+    private final String cellButtonBaseStyle
             = "-fx-background-color: #ffffff; "
             + "-fx-background-radius: 0; "
             + "-fx-text-fill: #000000; "
             + "-fx-font-size: 23";
-    private IntegerProperty sliderValue = new SimpleIntegerProperty(29);
+    private final String cellButtonSmallDigitsStyle
+            = "-fx-background-color: #ffffff; "
+            + "-fx-background-radius: 0; "
+            + "-fx-text-fill: #000000; "
+            + "-fx-font-size: 11.25; "
+            + "-fx-line-spacing: -5";
+    private final IntegerProperty sliderValue = new SimpleIntegerProperty(29);
 
     @FXML
     private void newPuzzle(ActionEvent event) {
@@ -89,9 +93,6 @@ public class GameController extends Controller {
 
     @FXML
     private void checkPuzzle(ActionEvent event) {
-
-        getGame().setHelp(true);
-
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("puzzle validity AKA your great skills");
         alert.setHeaderText(null);
@@ -131,8 +132,11 @@ public class GameController extends Controller {
     }
 
     @FXML
-    private void setCellWriteValuePressingKeys(KeyEvent event) {
+    private void fireButtonsWithKeys(KeyEvent event) {
         switch (event.getCode()) {
+            case S:
+                smallDigits.fire();
+                break;
             case DIGIT0:
             case NUMPAD0:
                 inputButtons[0].fire();
@@ -185,9 +189,18 @@ public class GameController extends Controller {
     }
 
     @FXML
-    private void seeSolution() {
+    private void seeSolution(ActionEvent event) {
         getGame().solve();
         drawBoard();
+    }
+
+    @FXML
+    private void toggleWriteSmall(ActionEvent event) {
+        if (smallDigits.isSelected()) {
+            getGame().setWriteSmall(true);
+        } else {
+            getGame().setWriteSmall(false);
+        }
     }
 
     private void createCellButtons() {
@@ -196,14 +209,19 @@ public class GameController extends Controller {
         for (int gridRow = 1; gridRow < 18; gridRow += 2) {
             for (int gridColumn = 1; gridColumn < 18; gridColumn += 2) {
                 Button b = new Button();
-                b.setPadding(new Insets(0));
+                b.setWrapText(true);
                 b.setMaxHeight(Double.MAX_VALUE);
                 b.setMaxWidth(Double.MAX_VALUE);
                 final int cellRow = buttonToRowIndex(i);
                 final int cellColumn = buttonToColumnIndex(i);
                 b.setOnAction((ActionEvent e) -> {
                     if (getGame().writeCell(cellRow, cellColumn)) {
-                        b.setText(getCellValue(cellRow, cellColumn));
+                        if (smallDigits.isSelected()) {
+                            setStyleSmallDigits(b);
+                        } else {
+                            setStyleNormalCell(b);
+                        }
+                        b.setText(getCellText(cellRow, cellColumn));
                         try {
                             if (getGame().won()) {
                                 victory();
@@ -231,7 +249,7 @@ public class GameController extends Controller {
         delete.setToggleGroup(group);
         delete.setSelected(true);
         delete.setOnAction((ActionEvent e) -> {
-            getGame().setCellWriteValue((byte) 0);
+            getGame().setWriteValue((byte) 0);
         });
         GridPane.setColumnSpan(delete, 3);
         inputGrid.add(delete, 1, 5);
@@ -244,9 +262,9 @@ public class GameController extends Controller {
                 rb.getStyleClass().add("toggle-button");
                 rb.setStyle("-fx-font-size: 17");
                 rb.setToggleGroup(group);
-                final byte cellWriteValue = i;
+                final byte writeValue = i;
                 rb.setOnAction((ActionEvent e) -> {
-                    getGame().setCellWriteValue(cellWriteValue);
+                    getGame().setWriteValue(writeValue);
                 });
                 inputGrid.add(rb, column, row);
                 inputButtons[i] = rb;
@@ -267,7 +285,7 @@ public class GameController extends Controller {
         return buttonIndex % 9;
     }
 
-    private String getCellValue(int row, int column) {
+    private String getCellText(int row, int column) {
         return getGame().cellToString(row, column);
     }
 
@@ -283,14 +301,14 @@ public class GameController extends Controller {
         for (int row = 0; row < 9; row++) {
             for (int column = 0; column < 9; column++) {
                 Button b = cellButtons[i];
-                b.setText(getCellValue(row, column));
-                String style = cellButtonBaseStyle;
-                if (isWritable(row, column)) {
-                    style += "; -fx-font-weight: normal";
+                if (getGame().containsSmallDigits(row, column)) {
+                    setStyleSmallDigits(b);
+                } else if (isWritable(row, column)) {
+                    setStyleNormalCell(b);
                 } else {
-                    style += "; -fx-font-weight: bold";
+                    setStyleBold(b);
                 }
-                b.setStyle(style);
+                b.setText(getCellText(row, column));
                 i++;
             }
         }
@@ -302,7 +320,7 @@ public class GameController extends Controller {
     }
 
     /**
-     * Initializes the game scene
+     * Initializes the game scene.
      */
     public void init() {
         createCellButtons();
@@ -324,7 +342,7 @@ public class GameController extends Controller {
     }
 
     /**
-     * Cleans up the game scene for a new user, when coming from the login scene
+     * Cleans up the game scene for a new user, when coming from the login scene.
      */
     public void clearForNewLogIn() {
         slider.setValue(29);
@@ -350,7 +368,6 @@ public class GameController extends Controller {
     }
 
     private void victory() {
-
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("congrats mate");
         alert.setHeaderText(null);
@@ -359,5 +376,20 @@ public class GameController extends Controller {
 
         alert.showAndWait();
         newPuzzle.fire();
+    }
+
+    private void setStyleSmallDigits(Button b) {
+        b.setStyle(cellButtonSmallDigitsStyle);
+        b.setPadding(new Insets(-6, 0, -6, -1));
+    }
+
+    private void setStyleNormalCell(Button b) {
+        b.setStyle(cellButtonBaseStyle);
+        b.setPadding(new Insets(0));
+    }
+
+    private void setStyleBold(Button b) {
+        b.setStyle(cellButtonBaseStyle + "; -fx-font-weight: bold");
+        b.setPadding(new Insets(0));
     }
 }

@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -14,7 +15,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#setCellWriteValuePressingKeys" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sudokuinsika.ui.GameController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#fireButtonsWithKeys" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sudokuinsika.ui.GameController">
    <center>
       <GridPane fx:id="puzzleGrid" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" style="-fx-background-color: black;" BorderPane.alignment="CENTER">
         <columnConstraints>
@@ -98,11 +99,11 @@
                   <Font size="23.0" />
                </font>
             </Label>
-            <Button fx:id="newPuzzle" mnemonicParsing="false" onAction="#newPuzzle" prefHeight="64.0" prefWidth="73.0" text="new puzzle" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="8">
+            <Button fx:id="newPuzzle" mnemonicParsing="false" onAction="#newPuzzle" prefHeight="64.0" prefWidth="73.0" text="new puzzle" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="8">
                <font>
                   <Font size="17.0" />
                </font></Button>
-            <Button fx:id="check" mnemonicParsing="false" onAction="#checkPuzzle" prefHeight="64.0" prefWidth="79.0" text="check puzzle" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="7">
+            <Button mnemonicParsing="false" onAction="#checkPuzzle" prefHeight="64.0" prefWidth="79.0" text="check puzzle" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="7">
                <font>
                   <Font size="17.0" />
                </font></Button>
@@ -121,11 +122,16 @@
                   <Font size="23.0" />
                </font>
             </Label>
-            <Button fx:id="giveUp" mnemonicParsing="false" onAction="#seeSolution" prefHeight="64.0" prefWidth="116.0" text="give up and see solution" wrapText="true" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="9">
+            <Button mnemonicParsing="false" onAction="#seeSolution" prefHeight="64.0" prefWidth="116.0" text="give up and see solution" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="9">
                <font>
                   <Font size="17.0" />
                </font>
             </Button>
+            <ToggleButton fx:id="smallDigits" mnemonicParsing="false" onAction="#toggleWriteSmall" prefHeight="64.0" prefWidth="69.0" text="small digits" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="3" GridPane.rowIndex="6">
+               <font>
+                  <Font size="17.0" />
+               </font>
+            </ToggleButton>
          </children>
       </GridPane>
    </left>

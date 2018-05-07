@@ -39,7 +39,7 @@ public interface ScoreDao {
     /**
      * Saves a score's data to a file.
      *
-     * @param userId the id of the user whose score we are saving
+     * @param user the user whose score we are saving
      * @param level the game difficulty level (how many cells are already set
      * before starting to solve the puzzle)
      * @param help true if help was used while solving the puzzle
@@ -47,6 +47,6 @@ public interface ScoreDao {
      * @param time when the puzzle was solved (date and time)
      * @throws SQLException
      */
-    void save(int userId, int level, boolean help, long score, long time)
+    void save(User user, int level, boolean help, long score, long time)
             throws SQLException;
 }

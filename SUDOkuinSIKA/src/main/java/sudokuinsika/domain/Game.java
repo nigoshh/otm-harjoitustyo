@@ -15,9 +15,11 @@ public class Game {
     private final UsersManagement usersMgmt;
     private Riddle riddle;
     private GameMatrix solution;
+    private SmallDigitsCell[][] smallDigits;
+    private boolean writeSmall;
     private int level;
     private boolean help;
-    private byte cellWriteValue;
+    private byte writeValue;
     private long startTime;
     private long lastWriteTime;
 
@@ -26,9 +28,7 @@ public class Game {
     }
 
     /**
-     * If the given cell is writable, sets its value to the value contained
-     * in object variable cellWriteValue and returns true; otherwise it does
-     * nothing and returns false.
+     * TODO
      *
      * @param row the given cell's row
      * @param column the given cell's column
@@ -37,10 +37,27 @@ public class Game {
     public boolean writeCell(int row, int column) {
         lastWriteTime = System.currentTimeMillis();
         if (isWritable(row, column)) {
-            riddle.set(row, column, cellWriteValue);
+            if (writeSmall) {
+                writeSmallDigit(row, column);
+            } else {
+                writeBigDigit(row, column);
+            }
             return true;
         }
         return false;
+    }
+
+    private void writeBigDigit(int row, int column) {
+        smallDigits[row][column] = null;
+        riddle.set(row, column, writeValue);
+    }
+
+    private void writeSmallDigit(int row, int column) {
+        if (smallDigits[row][column] == null) {
+            riddle.set(row, column, (byte) 0);
+            smallDigits[row][column] = new SmallDigitsCell();
+        }
+        smallDigits[row][column].writeOrDeleteDigit(writeValue);
     }
 
     /**
@@ -52,12 +69,16 @@ public class Game {
      * @return a String corresponding to the value of the given cell
      */
     public String cellToString(int row, int column) {
-        byte value = riddle.get(row, column);
-        String ret = "";
-        if (value != 0) {
-            ret += value;
+        if (containsSmallDigits(row, column)) {
+            return smallDigits[row][column].toString();
+        } else {
+            byte value = riddle.get(row, column);
+            String ret = "";
+            if (value != 0) {
+                ret += value;
+            }
+            return ret;
         }
-        return ret;
     }
 
     /**
@@ -75,6 +96,8 @@ public class Game {
             success = fillRiddle(level);
         }
         this.level = level;
+        smallDigits = new SmallDigitsCell[9][9];
+        writeSmall = false;
     }
 
     private boolean fillRiddle(int level) {
@@ -135,11 +158,12 @@ public class Game {
      * block, false otherwise
      */
     public boolean checkPuzzle() {
+        help = true;
         return riddle.isValid();
     }
 
-    public void setCellWriteValue(byte cellWriteValue) {
-        this.cellWriteValue = cellWriteValue;
+    public void setWriteValue(byte writeValue) {
+        this.writeValue = writeValue;
     }
 
     public Riddle getRiddle() {
@@ -180,9 +204,7 @@ public class Game {
 
         if (riddle.getSetCount() == 81 && riddle.isValid()) {
             long score = lastWriteTime - startTime;
-            int userId = usersMgmt.getLoggedInUser().getId();
-            usersMgmt.getScoreDao().save(
-                    userId, level, help, score, lastWriteTime);
+            usersMgmt.getScoreDao().save(usersMgmt.getLoggedInUser(), level, help, score, lastWriteTime);
             return true;
         }
 
@@ -195,7 +217,7 @@ public class Game {
     public void solve() {
         for (int row = 0; row < 9; row++) {
             for (int column = 0; column < 9; column++) {
-                setCellWriteValue(solution.get(row, column));
+                setWriteValue(solution.get(row, column));
                 if (writeCell(row, column)) {
                     riddle.setWritable(row, column, false);
                 }
@@ -203,12 +225,13 @@ public class Game {
         }
     }
 
-    public GameMatrix getSolution() {
-        return solution;
+    public boolean containsSmallDigits(int row, int column) {
+        return smallDigits[row][column] != null &&
+                !smallDigits[row][column].isEmpty();
     }
 
-    public void setHelp(boolean help) {
-        this.help = help;
+    public GameMatrix getSolution() {
+        return solution;
     }
 
     public int getLevel() {
@@ -217,5 +240,9 @@ public class Game {
 
     public long getStartTime() {
         return startTime;
+    }
+
+    public void setWriteSmall(boolean writeSmall) {
+        this.writeSmall = writeSmall;
     }
 }

@@ -53,7 +53,7 @@ public class DBScoreDao implements ScoreDao {
                     rs.getLong("score"), ChronoUnit.MILLIS);
             ZonedDateTime dateTime = ZonedDateTime.ofInstant(
                     rs.getTimestamp("time").toInstant(), ZoneId.systemDefault());
-            scores.add(new Score(user, score, dateTime));
+            scores.add(new Score(user, level, help, score, dateTime));
         }
         return scores;
     }
@@ -88,7 +88,7 @@ public class DBScoreDao implements ScoreDao {
                     rs.getLong("score"), ChronoUnit.MILLIS);
             ZonedDateTime dateTime = ZonedDateTime.ofInstant(
                     rs.getTimestamp("time").toInstant(), ZoneId.systemDefault());
-            scores.add(new Score(user, score, dateTime));
+            scores.add(new Score(user, level, help, score, dateTime));
         }
         return scores;
     }
@@ -96,7 +96,7 @@ public class DBScoreDao implements ScoreDao {
     /**
      * Saves a score's data to an SQL database file.
      *
-     * @param userId the id of the user whose score we are saving
+     * @param user the user whose score we are saving
      * @param level the game difficulty level (how many cells are already set
      * before starting to solve the puzzle)
      * @param help true if help was used while solving the puzzle
@@ -105,13 +105,13 @@ public class DBScoreDao implements ScoreDao {
      * @throws SQLException
      */
     @Override
-    public void save(int userId, int level, boolean help, long score, long time)
+    public void save(User user, int level, boolean help, long score, long time)
             throws SQLException {
         Connection conn = db.getConnection();
         String query = "INSERT INTO score (user_id, level, help, score, time) "
                 + "VALUES (?, ?, ?, ?, ?)";
         PreparedStatement stmt = conn.prepareStatement(query);
-        stmt.setInt(1, userId);
+        stmt.setInt(1, user.getId());
         stmt.setInt(2, level);
         stmt.setBoolean(3, help);
         stmt.setLong(4, score);
