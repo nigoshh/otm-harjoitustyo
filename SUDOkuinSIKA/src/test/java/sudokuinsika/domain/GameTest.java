@@ -1,29 +1,18 @@
 package sudokuinsika.domain;
 
-import java.security.NoSuchAlgorithmException;
-import java.sql.SQLException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import sudokuinsika.dao.FakeScoreDao;
-import sudokuinsika.dao.FakeUserDao;
 
 public class GameTest {
 
     private Game game;
-    private UsersManagement usersMgmt;
 
     @Before
-    public void setUp() throws SQLException, NoSuchAlgorithmException {
-        usersMgmt = new UsersManagement(new FakeUserDao(), new FakeScoreDao());
-        usersMgmt.setPwIterations(1);
-        String pw = "password";
-        char[] password = pw.toCharArray();
-        usersMgmt.createUser("test", password, "test");
-        usersMgmt.logIn("test", password);
-        game = new Game(usersMgmt);
+    public void setUp() {
+        game = new Game();
         game.createRiddle(29);
     }
 
@@ -108,18 +97,18 @@ public class GameTest {
     }
 
     @Test
-    public void wonReturnsTrueIfRiddleIsSolved() throws SQLException {
-        game.solve();
-        assertTrue(game.won());
+    public void getScoreReturnsANotNullScoreIfRiddleIsSolved() {
+        game.solveRiddle();
+        assertNotNull(game.getScore());
     }
 
     @Test
-    public void wonReturnsFalseIfRiddleIsntFilledButIsValid() throws SQLException {
-        assertFalse(game.won());
+    public void getScoreReturnsNullIfRiddleIsntFilledButIsValid() {
+        assertNull(game.getScore());
     }
 
     @Test
-    public void wonReturnsFalseIfRiddleIsntFilledAndIsntValid() throws SQLException {
+    public void getScoreReturnsNullIfRiddleIsntFilledAndIsntValid() {
         game.setWriteValue((byte) 1);
         int i = 0;
         writeSomeWrongNumbers:
@@ -134,15 +123,15 @@ public class GameTest {
                 }
             }
         }
-        assertFalse(game.won());
+        assertNull(game.getScore());
     }
 
     @Test
-    public void wonReturnsFalseIfRiddleIsFilledButNotValid() throws SQLException {
+    public void getScoreReturnsNullIfRiddleIsFilledButNotValid() {
         int[] cell = findFirstWritableCell();
         int row = cell[0];
         int column = cell[1];
-        game.solve();
+        game.solveRiddle();
         byte cellValue = game.getRiddle().get(row, column);
         cellValue++;
         if (cellValue == 10) {
@@ -151,7 +140,7 @@ public class GameTest {
         game.setWriteValue(cellValue);
         game.getRiddle().setWritable(row, column, true);
         game.writeCell(row, column);
-        assertFalse(game.won());
+        assertNull(game.getScore());
     }
 
     @Test
@@ -163,20 +152,6 @@ public class GameTest {
         Thread.sleep(1);
         game.resetTimer();
         assertTrue(now < game.getStartTime());
-    }
-
-    private int[] findFirstWritableCell() {
-        for (int row = 0; row < 9; row++) {
-            for (int column = 0; column < 9; column++) {
-                if (game.getRiddle().getWritable(row, column)) {
-                    int[] cell = new int[2];
-                    cell[0] = row;
-                    cell[1] = column;
-                    return cell;
-                }
-            }
-        }
-        return new int[2];
     }
 
     @Test
@@ -217,29 +192,24 @@ public class GameTest {
     }
 
     @Test
-    public void usingHelpMarksScoreAsHelpUsed() throws SQLException {
+    public void usingHelpMarksScoreAsHelpUsed() {
         game.checkPuzzle();
-        game.solve();
-        game.won();
-        assertEquals(1, usersMgmt.getScoreDao().findScores(29, true).size());
-        assertTrue(usersMgmt.getScoreDao().findScores(29, false).isEmpty());
+        game.solveRiddle();
+        game.getScore().withHelp();
+        assertTrue(game.getScore().withHelp());
     }
 
-    @Test
-    public void wonSavesScoresCorrectly() throws SQLException {
-        game.solve();
-        game.won();
-        assertEquals(1, usersMgmt.getScoreDao().findScores(29, false).size());
-        assertTrue(usersMgmt.getScoreDao().findScores(29, true).isEmpty());
-        assertTrue(usersMgmt.getScoreDao().findScores(23, false).isEmpty());
-        assertTrue(usersMgmt.getScoreDao().findScores(23, true).isEmpty());
-        assertEquals(1, usersMgmt.getScoreDao().findScores(new User("test"), 29, false).size());
-        assertTrue(usersMgmt.getScoreDao().findScores(new User("test"), 29, true).isEmpty());
-        assertTrue(usersMgmt.getScoreDao().findScores(new User("test"), 23, false).isEmpty());
-        assertTrue(usersMgmt.getScoreDao().findScores(new User("test"), 23, true).isEmpty());
-        assertTrue(usersMgmt.getScoreDao().findScores(new User("wrong"), 29, false).isEmpty());
-        assertTrue(usersMgmt.getScoreDao().findScores(new User("wrong"), 29, true).isEmpty());
-        assertTrue(usersMgmt.getScoreDao().findScores(new User("wrong"), 23, false).isEmpty());
-        assertTrue(usersMgmt.getScoreDao().findScores(new User("wrong"), 23, true).isEmpty());
+    private int[] findFirstWritableCell() {
+        for (int row = 0; row < 9; row++) {
+            for (int column = 0; column < 9; column++) {
+                if (game.getRiddle().getWritable(row, column)) {
+                    int[] cell = new int[2];
+                    cell[0] = row;
+                    cell[1] = column;
+                    return cell;
+                }
+            }
+        }
+        return new int[2];
     }
 }

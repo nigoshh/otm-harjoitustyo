@@ -21,7 +21,6 @@ public class DBUserDaoTest {
             db.init();
         }
         dao = new DBUserDao(db);
-
         Connection conn = db.getConnection();
         String query = "DELETE FROM user";
         PreparedStatement stmt = conn.prepareStatement(query);

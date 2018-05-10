@@ -21,4 +21,6 @@ day | time | tasks
 5/5/2018 | 6:00 | <span>give up and see puzzle solution<br>settings scene<br>update user data<br>delete user data</span>
 6/5/2018 | 7:15 | <span>move input length check from ui to domain<br>more precise error messages in new user scene<br>some refactoring in MainApp<br>FakeUserDao methods implementation<br>lots of tests<br>small digits (domain and style)</span>
 7/5/2018 | 5:10 | <span>small digits (ui)<br>more tests</span>
-**total** | 99:55 |数独ぜぇ～！
+9/5/2018 | 3:25 | <span>some refactoring<br>more Javadoc<br>clean up code<br>added Scrollpane as root node of every scene<br>GUI customization research</span>
+10/5/2018 | 5:30 | <span>some refactoring<br>more Javadoc<br>clean up code</span>
+**total** | 108:50 |数独ぜぇ～！

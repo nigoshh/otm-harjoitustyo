@@ -3,36 +3,70 @@ package sudokuinsika.domain;
 import de.sfuhrm.sudoku.Creator;
 import de.sfuhrm.sudoku.GameMatrix;
 import de.sfuhrm.sudoku.Riddle;
-import java.sql.SQLException;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Random;
 
 /**
- * Represents a sudoku game
+ * Represents a game of sudoku.
  */
 public class Game {
 
-    private final UsersManagement usersMgmt;
     private Riddle riddle;
     private GameMatrix solution;
     private SmallDigitsCell[][] smallDigits;
-    private boolean writeSmall;
     private int level;
     private boolean help;
     private byte writeValue;
+    private boolean writeSmall;
     private long startTime;
     private long lastWriteTime;
 
-    public Game(UsersManagement usersMgmt) {
-        this.usersMgmt = usersMgmt;
+    /**
+     * Sole constructor.
+     */
+    public Game() {
     }
 
     /**
-     * TODO
+     * Creates a new {@link #riddle} of the given difficulty {@link #level}. The
+     * level indicates how many cells are already set at the beginning.
+     * <p>
+     * From {@link de.sfuhrm.sudoku.Creator#createRiddle(GameMatrix)} we get a
+     * maximally cleared sudoku grid, meaning that no more cells can be cleared
+     * without compromising the solution's uniqueness. Then we set more cells in
+     * random order using the riddle's {@link #solution}, until we reach the
+     * amount of set cells specified in the parameter.
+     *
+     * @see de.sfuhrm.sudoku.Creator#createRiddle(GameMatrix)
+     * @param level number of cells whose value is known at the beginning
+     */
+    public void createRiddle(int level) {
+        boolean success = false;
+        while (!success) {
+            solution = Creator.createFull();
+            riddle = Creator.createRiddle(solution);
+            help = false;
+            success = fillRiddle(level);
+        }
+        this.level = level;
+        smallDigits = new SmallDigitsCell[9][9];
+        writeSmall = false;
+    }
+
+    /**
+     * If the given cell {@link #isWritable(int, int)}, this Writes the value
+     * contained in {@link #writeValue} to the given cell and returns true.
+     * Otherwise it writes nothing and returns false. If {@link #writeSmall} is
+     * true it writes to {@link #smallDigits}, otherwise to {@link #riddle}.
      *
      * @param row the given cell's row
      * @param column the given cell's column
-     * @return success of the writing operation
+     * @return success of the write operation
      */
     public boolean writeCell(int row, int column) {
         lastWriteTime = System.currentTimeMillis();
@@ -47,22 +81,81 @@ public class Game {
         return false;
     }
 
-    private void writeBigDigit(int row, int column) {
-        smallDigits[row][column] = null;
-        riddle.set(row, column, writeValue);
-    }
-
-    private void writeSmallDigit(int row, int column) {
-        if (smallDigits[row][column] == null) {
-            riddle.set(row, column, (byte) 0);
-            smallDigits[row][column] = new SmallDigitsCell();
-        }
-        smallDigits[row][column].writeOrDeleteDigit(writeValue);
+    /**
+     * Marks that help has been used by setting {@link #help} to true, then
+     * checks if each digit appears at most once in each row, column and block.
+     *
+     * @return true if each digit appears at most once in each row, column
+     * and block, false otherwise
+     */
+    public boolean checkPuzzle() {
+        help = true;
+        return riddle.isValid();
     }
 
     /**
-     * Returns a String corresponding to the value of the given cell.
-     * When the cell's value is 0, it returns an empty String.
+     * Solves the {@link #riddle}.
+     */
+    public void solveRiddle() {
+        for (int row = 0; row < 9; row++) {
+            for (int column = 0; column < 9; column++) {
+                setWriteValue(solution.get(row, column));
+                if (writeCell(row, column)) {
+                    riddle.setWritable(row, column, false);
+                }
+            }
+        }
+    }
+
+    /**
+     * Checks if {@link #riddle} is solved, in which case it returns the game's
+     * score, which is the time elapsed from {@link #riddle}'s creation until
+     * all cells are filled correctly. If {@link #riddle} isn't solved yet, null
+     * is returned.
+     *
+     * @return a Score or null
+     */
+    public Score getScore() {
+        if (riddle.getSetCount() == 81 && riddle.isValid()) {
+            Duration score = Duration.of(lastWriteTime - startTime, ChronoUnit.MILLIS);
+            ZonedDateTime dateTime = Instant.ofEpochMilli(lastWriteTime).atZone(ZoneId.systemDefault());
+            return new Score(null, level, help, score, dateTime);
+        }
+        return null;
+    }
+
+    /**
+     * Resets the game's timer by updating {@link #startTime}.
+     */
+    public void resetTimer() {
+        startTime = System.currentTimeMillis();
+    }
+
+    /**
+     * Checks if the given cell contains small digits.
+     *
+     * @param row the given cell's row
+     * @param column the given cell's column
+     * @return true if the cell contains at least one small digit, false otherwise
+     */
+    public boolean containsSmallDigits(int row, int column) {
+        return smallDigits[row][column] != null && !smallDigits[row][column].isEmpty();
+    }
+
+    /**
+     * Checks if the given cell is writable.
+     *
+     * @param row the given cell's row
+     * @param column the given cell's column
+     * @return true if the given cell is writable, false otherwise
+     */
+    public boolean isWritable(int row, int column) {
+        return riddle.getWritable(row, column);
+    }
+
+    /**
+     * Returns a string corresponding to the value of the given cell. When the
+     * cell's value is 0, it returns an empty string.
      *
      * @param row the given cell's row
      * @param column the given cell's column
@@ -82,22 +175,20 @@ public class Game {
     }
 
     /**
-     * Creates a new Riddle of the given difficulty level.
+     * Returns a string corresponding to the time elapsed since {@link #riddle}
+     * was created.
      *
-     * @param level number of cells whose value is known at the beginning
-     * of the puzzle
+     * @see #createRiddle(int)
+     * @return a String corresponding to the time elapsed since {@link #riddle}
+     * was created
      */
-    public void createRiddle(int level) {
-        boolean success = false;
-        while (!success) {
-            solution = Creator.createFull();
-            riddle = Creator.createRiddle(solution);
-            help = false;
-            success = fillRiddle(level);
-        }
-        this.level = level;
-        smallDigits = new SmallDigitsCell[9][9];
-        writeSmall = false;
+    public String timeElapsed() {
+        long now = System.currentTimeMillis();
+        long elapsedSeconds = (now - startTime) / 1000;
+        return String.format("%d:%02d:%02d",
+                elapsedSeconds / 3600,
+                (elapsedSeconds % 3600) / 60,
+                (elapsedSeconds % 60));
     }
 
     private boolean fillRiddle(int level) {
@@ -140,94 +231,21 @@ public class Game {
         }
     }
 
-    /**
-     * Returns true if the given cell is writable, false if it isn't.
-     *
-     * @param row the given cell's row
-     * @param column the given cell's column
-     * @return true if the given cell is writable, false if it isn't
-     */
-    public boolean isWritable(int row, int column) {
-        return riddle.getWritable(row, column);
+    private void writeBigDigit(int row, int column) {
+        smallDigits[row][column] = null;
+        riddle.set(row, column, writeValue);
     }
 
-    /**
-     * Checks that each digit appears at most once in each row, column and block.
-     *
-     * @return true if each digit appears at most once in each row, column and
-     * block, false otherwise
-     */
-    public boolean checkPuzzle() {
-        help = true;
-        return riddle.isValid();
-    }
-
-    public void setWriteValue(byte writeValue) {
-        this.writeValue = writeValue;
+    private void writeSmallDigit(int row, int column) {
+        if (smallDigits[row][column] == null) {
+            riddle.set(row, column, (byte) 0);
+            smallDigits[row][column] = new SmallDigitsCell();
+        }
+        smallDigits[row][column].writeOrDeleteDigit(writeValue);
     }
 
     public Riddle getRiddle() {
         return riddle;
-    }
-
-    /**
-     * Resets the game's timer, by updating object variable startTime.
-     */
-    public void resetTimer() {
-        startTime = System.currentTimeMillis();
-    }
-
-    /**
-     * Returns a String corresponding to the time elapsed since the last Riddle
-     * was created.
-     *
-     * @see #createRiddle(int)
-     * @return a String corresponding to the time elapsed since the last Riddle
-     * was created
-     */
-    public String timeElapsed() {
-        long now = System.currentTimeMillis();
-        long elapsedSeconds = (now - startTime) / 1000;
-        return String.format("%d:%02d:%02d",
-                elapsedSeconds / 3600,
-                (elapsedSeconds % 3600) / 60,
-                (elapsedSeconds % 60));
-    }
-
-    /**
-     * Returns true if the puzzle is solved, otherwise false.
-     *
-     * @return true if the puzzle is solved, otherwise false
-     * @throws SQLException
-     */
-    public boolean won() throws SQLException {
-
-        if (riddle.getSetCount() == 81 && riddle.isValid()) {
-            long score = lastWriteTime - startTime;
-            usersMgmt.getScoreDao().save(usersMgmt.getLoggedInUser(), level, help, score, lastWriteTime);
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Solves the riddle.
-     */
-    public void solve() {
-        for (int row = 0; row < 9; row++) {
-            for (int column = 0; column < 9; column++) {
-                setWriteValue(solution.get(row, column));
-                if (writeCell(row, column)) {
-                    riddle.setWritable(row, column, false);
-                }
-            }
-        }
-    }
-
-    public boolean containsSmallDigits(int row, int column) {
-        return smallDigits[row][column] != null &&
-                !smallDigits[row][column].isEmpty();
     }
 
     public GameMatrix getSolution() {
@@ -238,11 +256,15 @@ public class Game {
         return level;
     }
 
-    public long getStartTime() {
-        return startTime;
+    public void setWriteValue(byte writeValue) {
+        this.writeValue = writeValue;
     }
 
     public void setWriteSmall(boolean writeSmall) {
         this.writeSmall = writeSmall;
+    }
+
+    public long getStartTime() {
+        return startTime;
     }
 }

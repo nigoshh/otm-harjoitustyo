@@ -1,14 +1,14 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package sudokuinsika.dao;
 
 import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import static org.junit.Assert.*;
 import org.junit.Before;
@@ -16,14 +16,7 @@ import org.junit.Test;
 import sudokuinsika.domain.Score;
 import sudokuinsika.domain.User;
 
-/**
- *
- * @author nigosH
- */
 public class DBScoreDaoTest {
-
-    public DBScoreDaoTest() {
-    }
 
     DBScoreDao scoreDao;
     DBUserDao userDao;
@@ -37,7 +30,6 @@ public class DBScoreDaoTest {
         }
         scoreDao = new DBScoreDao(db);
         userDao = new DBUserDao(db);
-
         Connection conn = db.getConnection();
         String query = "DELETE FROM score";
         PreparedStatement stmt = conn.prepareStatement(query);
@@ -50,12 +42,13 @@ public class DBScoreDaoTest {
     public void saveSavesScoreAndFindScoresUserFindsIt() throws SQLException {
         User user = new User("test");
         user.setId(1);
-
-        scoreDao.save(user, 35, true, 323120, 380912742);
+        Duration score = Duration.of(323120, ChronoUnit.MILLIS);
+        ZonedDateTime dateTime = Instant.ofEpochMilli(380912742).atZone(ZoneId.systemDefault());
+        scoreDao.save(new Score(user, 35, true, score, dateTime));
         List<Score> scores = scoreDao.findScores(user, 35, true);
-        Score score = scores.get(0);
-        assertEquals(323120, score.getScore().toMillis());
-        assertEquals(380912742, score.getDateTime().toInstant().toEpochMilli());
+        Score saved = scores.get(0);
+        assertEquals(323120, saved.getScore().toMillis());
+        assertEquals(380912742, saved.getDateTime().toInstant().toEpochMilli());
     }
 
     @Test
@@ -63,12 +56,13 @@ public class DBScoreDaoTest {
         User user = new User("test");
         user.setId(1);
         userDao.save(user);
-
-        scoreDao.save(user, 52, false, 254230, 97391572);
+        Duration score = Duration.of(254230, ChronoUnit.MILLIS);
+        ZonedDateTime dateTime = Instant.ofEpochMilli(97391572).atZone(ZoneId.systemDefault());
+        scoreDao.save(new Score(user, 52, false, score, dateTime));
         List<Score> scores = scoreDao.findScores(52, false);
-        Score score = scores.get(0);
-        assertEquals("test", score.getUser().getUsername());
-        assertEquals(254230, score.getScore().toMillis());
-        assertEquals(97391572, score.getDateTime().toInstant().toEpochMilli());
+        Score saved = scores.get(0);
+        assertEquals("test", saved.getUser().getUsername());
+        assertEquals(254230, saved.getScore().toMillis());
+        assertEquals(97391572, saved.getDateTime().toInstant().toEpochMilli());
     }
 }

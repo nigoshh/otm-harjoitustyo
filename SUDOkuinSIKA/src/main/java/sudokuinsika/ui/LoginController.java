@@ -1,9 +1,10 @@
 package sudokuinsika.ui;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.sql.SQLException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
@@ -12,42 +13,41 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import sudokuinsika.domain.Game;
 
+/**
+ * FXML Controller for the login scene.
+ */
 public class LoginController extends Controller {
 
     @FXML
     private TextField username;
-
-    public TextField getUsername() {
-        return username;
-    }
-
     @FXML
     private PasswordField password;
-
     @FXML
     private Button logIn;
-
+    @FXML
+    private Label error;
     @FXML
     private Hyperlink linkToNewUser;
 
-    @FXML
-    private Label error;
+    /**
+     * Cleans up the login scene.
+     */
+    public void clear() {
+        username.setText("");
+        password.setText("");
+        error.setText("");
+        linkToNewUser.setVisited(false);
+        username.requestFocus();
+    }
 
     @FXML
-    private void logIn(ActionEvent event) throws SQLException {
-
-        setCursor(Cursor.WAIT);
-        Game game = getUsersMgmt().logIn(
-                username.getText(), password.getText().toCharArray());
-        setCursor(Cursor.DEFAULT);
-
+    private void logIn(ActionEvent event) throws SQLException, NoSuchAlgorithmException, InvalidKeySpecException {
+        Game game = getUsersMgmt().logIn(username.getText(), password.getText().toCharArray());
         if (game == null) {
             error.setText("wrong username and/or password! don't mess around");
         } else {
-            getApp().getGameController().clearForNewLogIn();
-            toGame(event);
+            toGameFromLogin(event);
         }
-
         username.setText("");
         password.setText("");
     }
@@ -61,13 +61,5 @@ public class LoginController extends Controller {
             default:
                 break;
         }
-    }
-
-    public void clear() {
-        username.setText("");
-        password.setText("");
-        error.setText("");
-        linkToNewUser.setVisited(false);
-        username.requestFocus();
     }
 }

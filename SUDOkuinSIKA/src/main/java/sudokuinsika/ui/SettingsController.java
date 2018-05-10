@@ -1,6 +1,7 @@
 package sudokuinsika.ui;
 
 import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.sql.SQLException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,46 +12,53 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
+/**
+ * FXML Controller for the settings scene.
+ */
 public class SettingsController extends Controller {
 
     @FXML
-    private TextField currentPW;
-
+    private TextField currentPw;
     @FXML
     private TextField newUsername;
-
     @FXML
-    private TextField newPW;
-
+    private TextField newPw;
     @FXML
-    private TextField repeatNewPW;
-
+    private TextField repeatNewPw;
     @FXML
     private TextField newEmail;
-
+    @FXML
+    private Label errorCurrentPw;
+    @FXML
+    private Label errorNewUsername;
+    @FXML
+    private Label errorNewPw;
+    @FXML
+    private Label errorNewEmail;
+    @FXML
+    private Label instructions;
     @FXML
     private Hyperlink gameLink;
 
-    @FXML
-    private Label instructions;
-
-    @FXML
-    private Label errorCurrentPW;
-
-    @FXML
-    private Label errorNewUsername;
-
-    @FXML
-    private Label errorNewPW;
-
-    @FXML
-    private Label errorNewEmail;
-
-    @FXML
-    private void changeUsername(ActionEvent event) throws SQLException {
+    /**
+     * Cleans up the settings scene.
+     */
+    public void clear() {
+        currentPw.setText("");
+        newUsername.setText("");
+        newPw.setText("");
+        repeatNewPw.setText("");
+        newEmail.setText("");
+        gameLink.setVisited(false);
+        instructions.requestFocus();
         clearErrors();
-        clearNewPWFields();
-        if (checkCurrentPW()) {
+    }
+
+    @FXML
+    private void changeUsername(ActionEvent event) throws NoSuchAlgorithmException, InvalidKeySpecException, SQLException {
+        clearErrors();
+        clearNewPwFields();
+        if (checkCurrentPw()) {
             if (getUsersMgmt().checkUsernameLength(newUsername.getText())) {
                 if (getUsersMgmt().changeUsername(newUsername.getText())) {
                     displaySuccessMessage("username");
@@ -66,32 +74,32 @@ public class SettingsController extends Controller {
     }
 
     @FXML
-    private void changePassword(ActionEvent event) throws NoSuchAlgorithmException, SQLException {
+    private void changePassword(ActionEvent event) throws NoSuchAlgorithmException, InvalidKeySpecException, SQLException {
         clearErrors();
-        if (checkCurrentPW()) {
-            if (getUsersMgmt().checkPasswordLength(newPW.getText())) {
-                if (newPW.getText().equals(repeatNewPW.getText())) {
-                    char[] newPassword = newPW.getText().toCharArray();
-                    clearNewPWFields();
+        if (checkCurrentPw()) {
+            if (getUsersMgmt().checkPasswordLength(newPw.getText())) {
+                if (newPw.getText().equals(repeatNewPw.getText())) {
+                    char[] newPassword = newPw.getText().toCharArray();
+                    clearNewPwFields();
                     getUsersMgmt().changePassword(newPassword);
                     displaySuccessMessage("password");
                 } else {
-                    errorNewPW.setText(errorNewPWFieldsMatch);
+                    errorNewPw.setText(errorNewPwFieldsMatch);
                 }
             } else {
-                errorNewPW.setText(errorPWLength);
+                errorNewPw.setText(errorPwLength);
             }
         } else {
             displayCurrentPasswordError();
         }
-        clearNewPWFields();
+        clearNewPwFields();
     }
 
     @FXML
-    private void changeEmail(ActionEvent event) throws SQLException {
+    private void changeEmail(ActionEvent event) throws NoSuchAlgorithmException, InvalidKeySpecException, SQLException {
         clearErrors();
-        clearNewPWFields();
-        if (checkCurrentPW()) {
+        clearNewPwFields();
+        if (checkCurrentPw()) {
             if (getUsersMgmt().checkEmailLength(newEmail.getText())) {
                 getUsersMgmt().changeEmail(newEmail.getText());
                 displaySuccessMessage("email");
@@ -104,31 +112,35 @@ public class SettingsController extends Controller {
     }
 
     @FXML
-    private void deleteUser(ActionEvent event) throws SQLException {
+    private void deleteUser(ActionEvent event) throws NoSuchAlgorithmException, InvalidKeySpecException, SQLException {
         clearErrors();
-        clearNewPWFields();
-        if (checkCurrentPW()) {
+        clearNewPwFields();
+        if (checkCurrentPw()) {
             displayWarning();
         } else {
             displayCurrentPasswordError();
         }
     }
 
-    public void clear() {
-        currentPW.setText("");
-        newUsername.setText("");
-        newPW.setText("");
-        repeatNewPW.setText("");
-        newEmail.setText("");
-        gameLink.setVisited(false);
-        instructions.requestFocus();
-        clearErrors();
+    private boolean checkCurrentPw() throws NoSuchAlgorithmException, InvalidKeySpecException {
+        boolean ret = getUsersMgmt().checkPassword(currentPw.getText().toCharArray());
+        currentPw.setText("");
+        return ret;
+    }
+
+    private void displayCurrentPasswordError() {
+        errorCurrentPw.setText("wrong password!");
+    }
+
+    private void clearNewPwFields() {
+        newPw.setText("");
+        repeatNewPw.setText("");
     }
 
     private void clearErrors() {
-        errorCurrentPW.setText("");
+        errorCurrentPw.setText("");
         errorNewUsername.setText("");
-        errorNewPW.setText("");
+        errorNewPw.setText("");
         errorNewEmail.setText("");
     }
 
@@ -149,25 +161,9 @@ public class SettingsController extends Controller {
         String message = "you sure you wanna obliterate all your data forever mate?";
         alert.setContentText(message);
         alert.showAndWait();
-
         if (alert.getResult() == ButtonType.YES) {
             getUsersMgmt().deleteUser();
             toLogin(new ActionEvent());
         }
-    }
-
-    private void displayCurrentPasswordError() {
-        errorCurrentPW.setText("wrong password!");
-    }
-
-    private boolean checkCurrentPW() {
-        boolean ret = getUsersMgmt().checkPassword(currentPW.getText().toCharArray());
-        currentPW.setText("");
-        return ret;
-    }
-
-    private void clearNewPWFields() {
-        newPW.setText("");
-        repeatNewPW.setText("");
     }
 }
