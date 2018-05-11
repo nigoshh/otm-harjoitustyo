@@ -23,4 +23,5 @@ day | time | tasks
 7/5/2018 | 5:10 | <span>small digits (ui)<br>more tests</span>
 9/5/2018 | 3:25 | <span>some refactoring<br>more Javadoc<br>clean up code<br>added Scrollpane as root node of every scene<br>GUI customization research</span>
 10/5/2018 | 5:30 | <span>some refactoring<br>more Javadoc<br>clean up code</span>
-**total** | 108:50 |数独ぜぇ～！
+11/5/2018 | 10:30 | <span>custom icon<br>software test documentation<br>update software requirements specification<br>update user guide<br>update software architecture description<br>new release</span>
+**total** | 119:20 |数独ぜぇ～！
