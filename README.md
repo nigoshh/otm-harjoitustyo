@@ -16,7 +16,7 @@ An app to play sudoku. Developed on Windows, might have some minor GUI bugs on L
 
 ## Latest release
 
-[Week 7](https://github.com/nigoshh/otm-harjoitustyo/releases/tag/week7)
+[Course evaluation](https://github.com/nigoshh/otm-harjoitustyo/releases/tag/week7)
 
 ## Command-line commands
 
