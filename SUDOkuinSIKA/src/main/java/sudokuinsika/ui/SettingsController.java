@@ -7,10 +7,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 
 /**
  * FXML Controller for the settings scene.
@@ -27,6 +29,12 @@ public class SettingsController extends Controller {
     private TextField repeatNewPw;
     @FXML
     private TextField newEmail;
+    @FXML
+    private Button changeUsername;
+    @FXML
+    private Button changePassword;
+    @FXML
+    private Button changeEmail;
     @FXML
     private Label errorCurrentPw;
     @FXML
@@ -61,6 +69,7 @@ public class SettingsController extends Controller {
         if (checkCurrentPw()) {
             if (getUsersMgmt().checkUsernameLength(newUsername.getText())) {
                 if (getUsersMgmt().changeUsername(newUsername.getText())) {
+                    newUsername.setText("");
                     displaySuccessMessage("username");
                 } else {
                     errorNewUsername.setText(errorUsernameTaken);
@@ -102,6 +111,7 @@ public class SettingsController extends Controller {
         if (checkCurrentPw()) {
             if (getUsersMgmt().checkEmailLength(newEmail.getText())) {
                 getUsersMgmt().changeEmail(newEmail.getText());
+                newEmail.setText("");
                 displaySuccessMessage("email");
             } else {
                 errorNewEmail.setText(errorEmailLength);
@@ -119,6 +129,39 @@ public class SettingsController extends Controller {
             displayWarning();
         } else {
             displayCurrentPasswordError();
+        }
+    }
+
+    @FXML
+    private void changeUsernamePressingEnter(KeyEvent event) {
+        switch (event.getCode()) {
+            case ENTER:
+                changeUsername.fire();
+                break;
+            default:
+                break;
+        }
+    }
+
+    @FXML
+    private void changePasswordPressingEnter(KeyEvent event) {
+        switch (event.getCode()) {
+            case ENTER:
+                changePassword.fire();
+                break;
+            default:
+                break;
+        }
+    }
+
+    @FXML
+    private void changeEmailPressingEnter(KeyEvent event) {
+        switch (event.getCode()) {
+            case ENTER:
+                changeEmail.fire();
+                break;
+            default:
+                break;
         }
     }
 
@@ -146,22 +189,27 @@ public class SettingsController extends Controller {
 
     private void displaySuccessMessage(String updated) {
         Alert alert = new Alert(AlertType.INFORMATION);
+        setCustomIcon(alert);
         alert.setTitle("cheers mate");
         alert.setHeaderText(null);
-        String message = updated + " updated successfully";
-        alert.setContentText(message);
+        alert.setContentText(updated + " updated successfully");
+        Button okButton = (Button) alert.getDialogPane().lookupButton(ButtonType.OK);
+        okButton.setDefaultButton(false);
         alert.showAndWait();
     }
 
     private void displayWarning() throws SQLException {
-        String title= "destroy everything you've worked for";
-        Alert alert = new Alert(AlertType.CONFIRMATION, title, ButtonType.YES, ButtonType.NO);
-        alert.setTitle(title);
+        String contentText = "you sure you wanna obliterate all your data forever mate?";
+        Alert alert = new Alert(AlertType.CONFIRMATION, contentText, ButtonType.YES, ButtonType.NO);
+        setCustomIcon(alert);
+        alert.setTitle("destroy everything you've worked for");
         alert.setHeaderText(null);
-        String message = "you sure you wanna obliterate all your data forever mate?";
-        alert.setContentText(message);
+        Button yesButton = (Button) alert.getDialogPane().lookupButton(ButtonType.YES);
+        yesButton.setDefaultButton(false);
         alert.showAndWait();
         if (alert.getResult() == ButtonType.YES) {
+            newUsername.setText("");
+            newEmail.setText("");
             getUsersMgmt().deleteUser();
             toLogin(new ActionEvent());
         }

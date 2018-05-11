@@ -14,6 +14,7 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
@@ -59,19 +60,22 @@ public class GameController extends Controller {
     private RadioButton[] inputButtons;
     private final IntegerProperty sliderValue = new SimpleIntegerProperty(29);
     private final String instructionsText
-            = "select the desired input from the available choices"
-            + "\n(click on a button or press the corresponding key on your keyboard)"
-            + "\nthen click on the desired cell in the puzzle"
-            + "\n\nyou can create a new puzzle by selecting the desired level with the slider"
-            + "\nand then clicking on the \"new puzzle\" button"
-            + "\n\nthe level number represents the number of cells"
-            + "\nthat are already filled in at the beginning"
-            + "\nso 79 is the easiest level, and 23 the hardest"
-            + "\n\nyou can check that all the digits you have input are valid"
-            + "\nby pressing the \"check puzzle\" button"
-            + "\nthis only means that there aren't any same digits in any column, row or block"
-            + "\n\nif you use the \"check puzzle\" button at least once when solving a puzzle"
-            + "\nyour score will be saved in a different category (\"with help\")";
+            = "to write a digit into a cell select the desired digit from the available choices by clicking a button or pressing the corresponding number key on your keyboard (0 for delete)\n"
+            + "then click on the desired cell in the puzzle (delete clears the cell)\n\n"
+            + "you can also annotate small digits into a cell to mark possible candidates for that cell\n"
+            + "to toggle the small-digits writing mode click the toggle button \"small digits\"\n\n"
+            + "you can create a new puzzle by selecting the desired level with the slider and then clicking the \"new puzzle\" button\n\n"
+            + "the level number represents the number of cells that are already filled in at the beginning\n"
+            + "so 79 is the easiest level, and 23 the hardest\n\n"
+            + "you can check that all the digits you have input are valid by clicking the \"check puzzle\" button\n"
+            + "this checks if each normal sized digit appears at most once in any column, row or block\n"
+            + "small digits are not taken into account when checking the puzzle\n\n"
+            + "if you click the \"check puzzle\" button at least once when solving a puzzle your score will be saved into a different category (\"with help\")\n\n"
+            + "try to solve the puzzle as quickly as possible!";
+    private final String logOutWarning
+            = "you sure you wanna log out?\n\n"
+            + "you won't be able to continue solving this particular puzzle\n"
+            + "the next time you log in";
     private final String cellButtonBaseStyle
             = "-fx-background-color: #ffffff; "
             + "-fx-background-radius: 0; "
@@ -148,6 +152,7 @@ public class GameController extends Controller {
     @FXML
     private void checkPuzzle(ActionEvent event) {
         Alert alert = new Alert(AlertType.INFORMATION);
+        setCustomIcon(alert);
         alert.setTitle("puzzle validity AKA your great skills");
         alert.setHeaderText(null);
         String message = "";
@@ -157,15 +162,20 @@ public class GameController extends Controller {
             message += "you messed up mate, something's wrong here";
         }
         alert.setContentText(message);
+        Button okButton = (Button) alert.getDialogPane().lookupButton(ButtonType.OK);
+        okButton.setDefaultButton(false);
         alert.showAndWait();
     }
 
     @FXML
     private void showInstructions(ActionEvent event) {
         Alert alert = new Alert(AlertType.INFORMATION);
+        setCustomIcon(alert);
         alert.setTitle("instructions");
         alert.setHeaderText(null);
         alert.setContentText(instructionsText);
+        Button okButton = (Button) alert.getDialogPane().lookupButton(ButtonType.OK);
+        okButton.setDefaultButton(false);
         alert.showAndWait();
     }
 
@@ -181,6 +191,21 @@ public class GameController extends Controller {
             getGame().setWriteSmall(true);
         } else {
             getGame().setWriteSmall(false);
+        }
+    }
+
+    @FXML
+    private void logOut(ActionEvent event) {
+        Alert alert = new Alert(AlertType.CONFIRMATION, logOutWarning, ButtonType.YES, ButtonType.NO);
+        setCustomIcon(alert);
+        alert.setTitle("forget this puzzle and log out");
+        alert.setHeaderText(null);
+        Button yesButton = (Button) alert.getDialogPane().lookupButton(ButtonType.YES);
+        yesButton.setDefaultButton(false);
+        alert.showAndWait();
+        if (alert.getResult() == ButtonType.YES) {
+            getUsersMgmt().logOut();
+            toLogin(event);
         }
     }
 
@@ -233,12 +258,6 @@ public class GameController extends Controller {
             default:
                 break;
         }
-    }
-
-    @FXML
-    private void logOut(ActionEvent event) {
-        getUsersMgmt().logOut();
-        toLogin(event);
     }
 
     private void createCellButtons() {
@@ -313,10 +332,12 @@ public class GameController extends Controller {
 
     private void congrats() {
         Alert alert = new Alert(AlertType.INFORMATION);
+        setCustomIcon(alert);
         alert.setTitle("congrats mate");
         alert.setHeaderText(null);
-        String message = "you won! cheers";
-        alert.setContentText(message);
+        alert.setContentText("you made it! cheers");
+        Button okButton = (Button) alert.getDialogPane().lookupButton(ButtonType.OK);
+        okButton.setDefaultButton(false);
         alert.showAndWait();
     }
 

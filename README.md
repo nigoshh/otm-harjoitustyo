@@ -4,19 +4,19 @@ An app to play sudoku. Developed on Windows, might have some minor GUI bugs on L
 
 ## Documentation
 
-[User guide](https://github.com/nigoshh/otm-harjoitustyo/blob/master/documentation/userguide.md)
+[User guide](https://github.com/nigoshh/otm-harjoitustyo/blob/master/documentation/user_guide.md)
 
 [Software requirements specification](https://github.com/nigoshh/otm-harjoitustyo/blob/master/documentation/software_requirements_specification.md)
 
-[Software architecture description](https://github.com/nigoshh/otm-harjoitustyo/blob/master/documentation/architecture.md)
+[Software architecture description](https://github.com/nigoshh/otm-harjoitustyo/blob/master/documentation/software_architecture_description.md)
+
+[Software test documentation](https://github.com/nigoshh/otm-harjoitustyo/blob/master/documentation/software_test_documentation.md)
 
 [Timesheet](https://github.com/nigoshh/otm-harjoitustyo/blob/master/documentation/timesheet.md)
 
-## Releases
+## Latest release
 
-[Week 5](https://github.com/nigoshh/otm-harjoitustyo/releases/tag/week5)
-
-[Week 6](https://github.com/nigoshh/otm-harjoitustyo/releases/tag/week6)
+[Week 7](https://github.com/nigoshh/otm-harjoitustyo/releases/tag/week7)
 
 ## Command-line commands
 

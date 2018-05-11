@@ -7,6 +7,7 @@ import static javafx.application.Application.launch;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import sudokuinsika.dao.DBScoreDao;
 import sudokuinsika.dao.DBUserDao;
@@ -82,9 +83,19 @@ public class MainApp extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         this.stage = stage;
-        stage.setTitle("SUDOku");
+        setCustomIcon(stage);
+        stage.setTitle("SUDOkuinSIKA");
         stageLoginScene();
         stage.show();
+    }
+
+    /**
+     * Sets a custom icon for the given stage.
+     *
+     * @param stage the stage to which we are setting a custom icon
+     */
+    public void setCustomIcon(Stage stage) {
+        stage.getIcons().add(new Image(MainApp.class.getResourceAsStream("/img/board.png")));
     }
 
     /**

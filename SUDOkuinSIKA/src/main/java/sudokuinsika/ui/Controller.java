@@ -6,6 +6,8 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.stage.Stage;
 import sudokuinsika.domain.Game;
 import sudokuinsika.domain.UsersManagement;
 
@@ -57,6 +59,10 @@ public class Controller implements Initializable {
     protected void toSettings(ActionEvent event) {
         app.getSettingsController().clear();
         app.stageSettingsScene();
+    }
+
+    protected void setCustomIcon(Alert alert) {
+        app.setCustomIcon((Stage) alert.getDialogPane().getScene().getWindow());
     }
 
     protected Game getGame() {

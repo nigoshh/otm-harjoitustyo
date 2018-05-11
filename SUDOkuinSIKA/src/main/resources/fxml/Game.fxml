@@ -135,7 +135,7 @@
              <children>
                 <HBox alignment="TOP_CENTER">
                    <children>
-                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="SUDOkuu月">
+                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="sudoKUU月">
                          <font>
                             <Font size="30.0" />
                          </font>

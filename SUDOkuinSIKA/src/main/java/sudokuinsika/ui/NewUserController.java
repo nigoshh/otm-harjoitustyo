@@ -73,6 +73,8 @@ public class NewUserController extends Controller {
                 if (getUsersMgmt().createUser(username.getText(),
                         password.getText().toCharArray(), email.getText())) {
                     toLogin(event);
+                    username.setText("");
+                    email.setText("");
                 } else {
                     errorUsername.setText(errorUsernameTaken);
                 }
